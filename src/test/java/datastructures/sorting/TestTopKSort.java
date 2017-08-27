@@ -1,5 +1,6 @@
-package datastructures;
+package datastructures.sorting;
 
+import datastructures.BaseTest;
 import datastructures.concrete.DoubleLinkedList;
 import datastructures.interfaces.IList;
 import misc.Searcher;
