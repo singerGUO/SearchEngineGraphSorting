@@ -19,7 +19,7 @@ import java.util.Map;
 public class Webapp {
     /**
      * The path to all static, non-changing files we will serve.
-     * (See 'hw2/main/resources')
+     * (See 'src/main/resources')
      */
     private static final String STATIC_FILES = "webapp/static";
 
@@ -30,7 +30,6 @@ public class Webapp {
 
     private final String siteName;
     private final SearchEngine engine;
-    private final MustacheTemplateEngine templateEngine;
     private final Service http;
 
     /**
@@ -43,7 +42,6 @@ public class Webapp {
     public Webapp(SearchEngine engine, String siteName, int port) {
         this.engine = engine;
         this.siteName = siteName;
-        this.templateEngine = new MustacheTemplateEngine(TEMPLATE_FILES);
 
         this.http = Service.ignite()
                 .staticFileLocation(STATIC_FILES)
@@ -91,6 +89,7 @@ public class Webapp {
     }
 
     private String render(String templateName, Map<String, Object> params) {
-        return this.templateEngine.render(new ModelAndView(params, templateName));
+        return new MustacheTemplateEngine(TEMPLATE_FILES).render(
+                new ModelAndView(params, templateName));
     }
 }

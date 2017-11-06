@@ -7,19 +7,19 @@ import static org.junit.Assert.fail;
 
 import datastructures.concrete.ChainedHashSet;
 import datastructures.interfaces.ISet;
-import misc.exceptions.NoSuchKeyException;
+import misc.BaseTest;
 import org.junit.Test;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class TestChainedHashSet extends BaseTest {
-    protected <T> ISet<T> newSet() {
+    protected <T> ISet<T> makeInstance() {
         return new ChainedHashSet<>();
     }
 
     protected ISet<String> makeBasicSet() {
-        ISet<String> set = this.newSet();
+        ISet<String> set = this.makeInstance();
         set.add("keyA");
         set.add("keyB");
         set.add("keyC");
@@ -32,14 +32,7 @@ public class TestChainedHashSet extends BaseTest {
 
         for (int i = 0; i < expectedItems.length; i++) {
             T key = expectedItems[i];
-            try {
-                assertTrue(actual.contains(key));
-            } catch (NoSuchKeyException ex) {
-                String message = String.format(
-                        "Expected key '%s' was missing from dictionary",
-                        key);
-                throw new AssertionError(message, ex);
-            }
+            assertTrue(actual.contains(key));
         }
     }
 
@@ -51,7 +44,7 @@ public class TestChainedHashSet extends BaseTest {
 
     @Test(timeout=SECOND)
     public void testPutAndGetSameKeyRepeated() {
-        ISet<Integer> set = this.newSet();
+        ISet<Integer> set = this.makeInstance();
 
         // First insertion
         set.add(3);
@@ -68,7 +61,7 @@ public class TestChainedHashSet extends BaseTest {
 
     @Test(timeout=SECOND)
     public void testPutAndGetSameKeyRepeatedMany() {
-        ISet<String> set = this.newSet();
+        ISet<String> set = this.makeInstance();
         set.add("a");
         set.add("b");
         set.add("a");
@@ -82,7 +75,7 @@ public class TestChainedHashSet extends BaseTest {
 
     @Test(timeout=SECOND)
     public void testContains() {
-        ISet<String> set = this.newSet();
+        ISet<String> set = this.makeInstance();
 
         assertFalse(set.contains("foo"));
 
@@ -94,21 +87,21 @@ public class TestChainedHashSet extends BaseTest {
 
     @Test(timeout=10 * SECOND)
     public void testAddAndCheckMany() {
-        ISet<Integer> set = this.newSet();
-        int CAP = 10000;
+        ISet<Integer> set = this.makeInstance();
+        int cap = 10000;
 
-        for (int i = 0; i < CAP; i++) {
+        for (int i = 0; i < cap; i++) {
             set.add(i);
         }
 
-        for (int i = CAP - 1; i >= 0; i--) {
+        for (int i = cap - 1; i >= 0; i--) {
             assertTrue(set.contains(i));
             if (i != 0) {
                 assertFalse(set.contains(-i));
             }
         }
 
-        assertEquals(CAP, set.size());
+        assertEquals(cap, set.size());
         assertFalse(set.isEmpty());
     }
 
@@ -128,7 +121,7 @@ public class TestChainedHashSet extends BaseTest {
 
     @Test(timeout=SECOND)
     public void testRemoveDuplicate() {
-        ISet<String> set = this.newSet();
+        ISet<String> set = this.makeInstance();
         set.add("a");
         set.add("b");
         set.add("c");
@@ -147,13 +140,13 @@ public class TestChainedHashSet extends BaseTest {
 
     @Test(timeout=SECOND)
     public void testRemoveErrorHandling() {
-        ISet<Integer> list = this.newSet();
+        ISet<Integer> list = this.makeInstance();
         list.add(3);
 
         try {
             list.remove(4);
-            fail("Expected NoSuchKeyException");
-        } catch (NoSuchKeyException ex) {
+            fail("Expected NoSuchElementException");
+        } catch (NoSuchElementException ex) {
             // Do nothing: this is ok
         }
 
@@ -161,15 +154,15 @@ public class TestChainedHashSet extends BaseTest {
 
         try {
             list.remove(3);
-            fail("Expected NoSuchKeyException");
-        } catch (NoSuchKeyException ex) {
+            fail("Expected NoSuchElementException");
+        } catch (NoSuchElementException ex) {
             // Do nothing: this is ok
         }
     }
 
     @Test(timeout=SECOND)
     public void testContainsWithRemovesBasic() {
-        ISet<String> set = this.newSet();
+        ISet<String> set = this.makeInstance();
 
         set.add("a");
         set.add("b");
@@ -194,7 +187,7 @@ public class TestChainedHashSet extends BaseTest {
         String key1 = "abcdefghijklmnopqrstuvwxyz";
         String key2 = key1 + "";
 
-        ISet<String> set = this.newSet();
+        ISet<String> set = this.makeInstance();
         set.add(key1);
 
         assertTrue(set.contains(key1));
@@ -222,21 +215,21 @@ public class TestChainedHashSet extends BaseTest {
     @Test(timeout=SECOND)
     public void testContainsMany() {
         ISet<String> set = this.makeBasicSet();
-        int CAP = 100000;
+        int cap = 100000;
 
-        for (int i = 0; i < CAP; i++) {
+        for (int i = 0; i < cap; i++) {
             set.add("keyC");
         }
 
-        for (int i = 0; i < CAP; i++) {
+        for (int i = 0; i < cap; i++) {
             assertTrue(set.contains("keyC"));
         }
     }
 
     @Test(timeout=SECOND)
     public void testIterator() {
-        ISet<String> set = this.newSet();
-        ISet<String> copy = this.newSet();
+        ISet<String> set = this.makeInstance();
+        ISet<String> copy = this.makeInstance();
         for (int i = 0; i < 1000; i++) {
             set.add("" + i);
             copy.add("" + i);
@@ -251,13 +244,13 @@ public class TestChainedHashSet extends BaseTest {
 
     @Test(timeout=SECOND)
     public void testIteratorUnusualKeys() {
-        ISet<String> map = this.newSet();
+        ISet<String> map = this.makeInstance();
 
         map.add(null);
         map.add("");
 
         boolean metNullKey = false;
-        boolean metEmptyKey = true;
+        boolean metEmptyKey = false;
         int numItems = 0;
         for (String key : map) {
             if (key == null) {
@@ -331,7 +324,7 @@ public class TestChainedHashSet extends BaseTest {
 
     @Test(timeout=SECOND)
     public void testManyObjectsWithSameHashCode() {
-        ISet<Wrapper<String>> set = this.newSet();
+        ISet<Wrapper<String>> set = this.makeInstance();
         for (int i = 0; i < 1000; i++) {
             set.add(new Wrapper<>("" + i, 0));
         }
@@ -354,7 +347,7 @@ public class TestChainedHashSet extends BaseTest {
 
     @Test(timeout=SECOND)
     public void testNegativeHashCode() {
-        ISet<Wrapper<String>> set = this.newSet();
+        ISet<Wrapper<String>> set = this.makeInstance();
 
         Wrapper<String> key1 = new Wrapper<>("foo", -1);
         Wrapper<String> key2 = new Wrapper<>("bar", -100000);
@@ -376,24 +369,23 @@ public class TestChainedHashSet extends BaseTest {
 
     @Test(timeout=10*SECOND)
     public void stressTest() {
-        int LIMIT = 1000000;
-        ISet<Integer> set = this.newSet();
-        //Map<Integer, Integer> set = new HashMap<>();
+        int limit = 1000000;
+        ISet<Integer> set = this.makeInstance();
 
-        for (int i = 0; i < LIMIT; i++) {
+        for (int i = 0; i < limit; i++) {
             set.add(i);
             assertTrue(set.contains(i));
         }
 
-        for (int i = 0; i < LIMIT; i++) {
+        for (int i = 0; i < limit; i++) {
             assertFalse(set.contains(-1));
         }
 
-        for (int i = 0; i < LIMIT; i++) {
+        for (int i = 0; i < limit; i++) {
             set.add(i);
         }
 
-        for (int i = 0; i < LIMIT; i++) {
+        for (int i = 0; i < limit; i++) {
             set.remove(i);
             assertFalse(set.contains(i));
         }

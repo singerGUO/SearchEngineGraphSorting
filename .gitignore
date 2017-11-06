@@ -1,3 +1,6 @@
+# Project 3 specific things
+*.cache
+ 
 # Java-specific 
 # Compiled class file
 *.class

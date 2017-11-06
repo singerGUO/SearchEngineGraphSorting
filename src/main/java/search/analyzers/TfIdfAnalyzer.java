@@ -39,6 +39,13 @@ public class TfIdfAnalyzer {
         //this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
     }
 
+    // Note: this method, strictly speaking, doesn't need to exist. However,
+    // we've included it so we can add some unit tests to help verify that your
+    // constructor correctly initializes your fields.
+    public IDictionary<URI, IDictionary<String, Double>> getDocumentTfIdfVectors() {
+        return this.documentTfIdfVectors;
+    }
+
     // Note: these private methods are suggestions or hints on how to structure your
     // code. However, since they're private, you're not obligated to implement exactly
     // these methods: Feel free to change or modify these methods if you want. The
@@ -67,8 +74,8 @@ public class TfIdfAnalyzer {
      * See spec for more details on what this method should do.
      */
     private IDictionary<URI, IDictionary<String, Double>> computeAllDocumentTfIdfVectors(ISet<Webpage> pages) {
-        // Since this is a private method, you are free to modify the parameters if you want.
-        // You probably shouldn't modify the return type, though.
+        // Hint: this method should use the idfScores field and
+        // call the computeTfScores(...) method.
         throw new NotYetImplementedException();
     }
 
@@ -81,6 +88,14 @@ public class TfIdfAnalyzer {
      */
     public Double computeRelevance(IList<String> query, URI pageUri) {
         // TODO: Replace this with actual, working code.
+
+        // TODO: The pseudocode we gave you is not very efficient. When implementing,
+        // this smethod, you should:
+        //
+        // 1. Figure out what information can be precomputed in your constructor.
+        //    Add a third field containing that information.
+        //
+        // 2. See if you can combine or merge one or more loops.
         return 0.0;
     }
 }

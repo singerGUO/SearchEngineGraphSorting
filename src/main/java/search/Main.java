@@ -3,10 +3,9 @@ package search;
 public class Main {
     // The dataset to index and search.
     // MUST be the name of one of the folders in the 'data' folder.
-    public static final String DATA_FOLDER_NAME = "wikipedia";
+    public static final String DATA_FOLDER_NAME = "wikipedia-with-spam";
 
-    // The name of your search engine.
-    // Change this constant to anything you want!
+    // The name of your search engine (feel free to change this).
     public static final String SITE_TITLE = "Noodle";
 
     // The port to serve your web server on.

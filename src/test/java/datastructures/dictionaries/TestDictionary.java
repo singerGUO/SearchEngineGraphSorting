@@ -2,17 +2,17 @@ package datastructures.dictionaries;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import datastructures.BaseTest;
+import misc.BaseTest;
 import datastructures.concrete.KVPair;
 import datastructures.interfaces.IDictionary;
-import datastructures.interfaces.IList;
 import misc.exceptions.NoSuchKeyException;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public abstract class TestDictionary extends BaseTest {
@@ -55,10 +55,6 @@ public abstract class TestDictionary extends BaseTest {
             }
         }
     }
-
-    /**
-     * TODO: document
-     */
 
     @Test(timeout=SECOND)
     public void testPutAndGetBasic() {
@@ -138,18 +134,18 @@ public abstract class TestDictionary extends BaseTest {
     @Test(timeout=10 * SECOND)
     public void testPutAndGetMany() {
         IDictionary<Integer, Integer> dict = this.newDictionary();
-        int CAP = 10000;
+        int cap = 10000;
 
-        for (int i = 0; i < CAP; i++) {
+        for (int i = 0; i < cap; i++) {
             dict.put(i, i * 2);
         }
 
-        for (int i = CAP - 1; i >= 0; i--) {
+        for (int i = cap - 1; i >= 0; i--) {
             int value = dict.get(i);
             assertEquals(i * 2, value);
         }
 
-        assertEquals(CAP, dict.size());
+        assertEquals(cap, dict.size());
         assertFalse(dict.isEmpty());
     }
 
@@ -230,15 +226,15 @@ public abstract class TestDictionary extends BaseTest {
 
     @Test(timeout=5 * SECOND)
     public void testAddGetMany() {
-        int CAP = 15000;
+        int cap = 15000;
         IDictionary<Integer, Integer> dict = this.newDictionary();
 
         for (int repeats = 0; repeats < 3; repeats++) {
-            for (int i = 0; i < CAP; i++) {
+            for (int i = 0; i < cap; i++) {
                 dict.put(i, i * 2);
             }
 
-            for (int i = 0; i < CAP; i++) {
+            for (int i = 0; i < cap; i++) {
                 int value = dict.get(i);
                 assertEquals(i * 2, value);
             }
@@ -302,15 +298,31 @@ public abstract class TestDictionary extends BaseTest {
     }
 
     @Test(timeout=SECOND)
+    public void testNonNullKeys() {
+        IDictionary<Wrapper<String>, String> dict = this.newDictionary();
+        dict.put(new Wrapper<>("foo"), "foo");
+        dict.put(new Wrapper<>("bar"), "bar");
+
+        assertEquals("foo", dict.get(new Wrapper<>("foo")));
+        assertEquals("bar", dict.get(new Wrapper<>("bar")));
+
+        dict.put(new Wrapper<>("foo"), "hello");
+
+        assertEquals(2, dict.size());
+
+        assertEquals("hello", dict.get(new Wrapper<>("foo")));
+    }
+
+    @Test(timeout=SECOND)
     public void testGetMany() {
         IDictionary<String, String> dict = this.makeBasicDictionary();
-        int CAP = 100000;
+        int cap = 100000;
 
-        for (int i = 0; i < CAP; i++) {
+        for (int i = 0; i < cap; i++) {
             dict.put("keyC", "newValC");
         }
 
-        for (int i = 0; i < CAP; i++) {
+        for (int i = 0; i < cap; i++) {
             assertEquals("newValC", dict.get("keyC"));
         }
     }
@@ -416,5 +428,76 @@ public abstract class TestDictionary extends BaseTest {
 
         assertFalse(iter3.hasNext());
         assertFalse(iter4.hasNext());
+    }
+
+    @Test(timeout=SECOND)
+    public void testIteratorOverEmptyDictionary() {
+        IDictionary<String, String> dict = this.newDictionary();
+
+        for (int i = 0; i < 10; i++) {
+            Iterator<KVPair<String, String>> iter = dict.iterator();
+            for (int j = 0; j < 3; j++) {
+                assertFalse(iter.hasNext());
+            }
+            for (int j = 0; j < 3; j++) {
+                try {
+                    iter.next();
+                    fail("Expected NoSuchElementException");
+                } catch (NoSuchElementException ex) {
+                    // This is ok
+                }
+            }
+        }
+    }
+
+    @Test(timeout=SECOND)
+    public void testIteratorOverDictionaryWithOneElement() {
+        IDictionary<String, String> dict = this.newDictionary();
+        dict.put("foo", "bar");
+
+        for (int i = 0; i < 10; i++) {
+            Iterator<KVPair<String, String>> iter = dict.iterator();
+            for (int j = 0; j < 3; j++) {
+                assertTrue(iter.hasNext());
+            }
+            KVPair<String, String> pair = iter.next();
+            assertEquals("foo", pair.getKey());
+            assertEquals("bar", pair.getValue());
+
+            for (int j = 0; j < 3; j++) {
+                assertFalse(iter.hasNext());
+            }
+            for (int j = 0; j < 3; j++) {
+                try {
+                    iter.next();
+                    fail("Expected NoSuchElementException");
+                } catch (NoSuchElementException ex) {
+                    // This is ok
+                }
+            }
+        }
+    }
+
+    @Test(timeout=SECOND)
+    public void testIteratorRunsMultipleTimes() {
+        IDictionary<String, String> dict = this.newDictionary();
+        for (int i = 0; i < 100; i++) {
+            dict.put("key" + i, "val" + i);
+        }
+
+        List<KVPair<String, String>> expectedOutput = new ArrayList<>();
+        for (KVPair<String, String> pair : dict) {
+            expectedOutput.add(pair);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            Iterator<KVPair<String, String>> iter = dict.iterator();
+            for (int j = 0; j < expectedOutput.size(); j++) {
+                assertTrue(iter.hasNext());
+                assertEquals(expectedOutput.get(j), iter.next());
+            }
+
+            assertFalse(iter.hasNext());
+        }
     }
 }

@@ -19,15 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/**
- * A class that bundles together all of our search engine functionality into
- * a single class.
- */
 public class SearchEngine {
-    /**
-     * Some constants to tune PageRankAnalyzer. You do not need to
-     * modify these constants.
-     */
     public static double PAGE_RANK_DECAY = 0.85;
     public static double PAGE_RANK_EPSILON = 0.0001;
     public static int PAGE_RANK_ITERATION_LIMIT = 200;
@@ -36,27 +28,26 @@ public class SearchEngine {
     private TfIdfAnalyzer tfIdfAnalyzer;
     private PageRankAnalyzer pageRankAnalyzer;
 
-    /**
-     * Creates a new instance of this class set up to search and return results
-     * using the webpages located at the given provided folder.
-     */
     public SearchEngine(String dataFolderName) {
+        long start = System.currentTimeMillis();
         ISet<Webpage> webpages = this.collectWebpages(Paths.get("data", dataFolderName));
-        this.pages = this.extractWebpageSummaries(webpages);
+        long end = System.currentTimeMillis() - start;
+        System.out.println("Done loading pages (" + (end / 1000.0) + " sec)");
 
+        this.pages = this.extractWebpageSummaries(webpages);
+        System.out.println("Done extracting");
+
+        start = System.currentTimeMillis();
         this.tfIdfAnalyzer = new TfIdfAnalyzer(webpages);
         this.pageRankAnalyzer = new PageRankAnalyzer(
                 webpages,
                 PAGE_RANK_DECAY,
                 PAGE_RANK_EPSILON,
                 PAGE_RANK_ITERATION_LIMIT);
+        end = System.currentTimeMillis() - start;
+        System.out.println("Done indexing (" + (end / 1000.0) + " sec)");
     }
 
-    /**
-     * Returns a numeric rank representing the relevance of the given query to the URI.
-     *
-     * The returned number will never be negative.
-     */
     public double computeScore(IList<String> query, URI uri) {
         double tfIdf = this.tfIdfAnalyzer.computeRelevance(query, uri);
         double pageRank = this.pageRankAnalyzer.computePageRank(uri);
@@ -72,23 +63,25 @@ public class SearchEngine {
         // a classifier that combines these two scores.
         //
         // Figuring out the best way to do this is something of a black art
-        // and is a part of the "secret sauce" of commerical web engines.
+        // and is a part of the "secret sauce" of commercial web engines.
         //
-        // However, in the interests of simplicity, we'll just use a
-        // weighted average. This is a pretty arbitrary choice: feel
-        // free to modify this method however you want!
+        // However, in the interests of simplicity, we opted not to do that
+        // and just experimented with formulas until we found that seemed to
+        // work well.
         //
-        // We will be grading your TfIdfAnalyzer and PageRankAnalyzer
-        // classes separately, but not this method.
-        return tfIdf * 0.7 + pageRank * 0.3;
+        // The intuition here is that the pageRank for any given page tends
+        // to be skewed -- popular pages tend to have abnormally high
+        // ranks, other pages have very small ones. So, we take the square
+        // root to "normalize" these extremes, then multiply it against
+        // the tfIdf score to scale it accordingly.
+        //
+        // That's the underlying justification for why we chose this formula,
+        // but it's still a pretty ad-hoc approach. Feel free to adjust or
+        // change this formula: we will be grading your TfIdfAnalyzer and
+        // PageRankAnalyzer classes separately, but not this method.
+        return tfIdf * Math.sqrt(pageRank);
     }
 
-    /**
-     * Returns the top k webpages that match this query.
-     *
-     * The results are returned in *display order*: the best results come
-     * first, and the worst results come last.
-     */
     public IList<Result> getTopKResults(IList<String> query, int k) {
         IList<Result> results = new DoubleLinkedList<>();
 

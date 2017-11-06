@@ -3,11 +3,11 @@ package datastructures.concrete;
 /**
  * Represents a key-value pair from a dictionary.
  *
- * This data-structure is deliberately immutable (read-only): you cannot
+ * This data structure is deliberately immutable (read-only): you cannot
  * change the key or value within this pair.
  */
 public class KVPair<K, V> {
-    // Implementation note: you may NOT modify this class.
+    // Implementation note: you may NO"T modify this class.
 
     private K key;
     private V value;
@@ -36,16 +36,16 @@ public class KVPair<K, V> {
 
     /**
      * Returns 'true' if the given object is of type KVPair and if
-     * its key and value are both equivalent to this one's
+     * its key and value are both equivalent to this one's.
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         KVPair<?, ?> that = (KVPair<?, ?>) o;
 
-        if (key != null ? !key.equals(that.key) : that.key != null) return false;
+        if (key != null ? !key.equals(that.key) : that.key != null) { return false; }
         return value != null ? value.equals(that.value) : that.value == null;
     }
 

@@ -1,49 +1,45 @@
 package datastructures.interfaces;
 
 import java.util.Iterator;
-
-import misc.exceptions.NoSuchItemException;
+import java.util.NoSuchElementException;
 
 /**
- * Represents a collection of non-duplicate items.
+ * Represents a data structure that contains a unique collection of items.
  */
 public interface ISet<T> extends Iterable<T> {
     /**
-     * Adds the given item to the set, if not already present.
-     */
-    void add(T item);
-
-    /**
-     * Removes the given item from the set, if possible.
+     * Adds the given item to the set.
      *
-     * @throws NoSuchItemException  if this set does not contain the given item
+     * If the item already exists in the set, this method does nothing.
      */
-    void remove(T item);
+    public void add(T item);
 
     /**
-     * Returns 'true' if this set contains the given element and false otherwise.
+     * Removes the given item from the set.
+     *
+     * @throws NoSuchElementException  if the set does not contain the given item
      */
-    boolean contains(T item);
+    public void remove(T item);
 
     /**
-     * Returns the number of elements contained within this set.
+     * Returns 'true' if the set contains this item and false otherwise.
      */
-    int size();
+    public boolean contains(T item);
 
     /**
-     * Returns 'true' if this set is empty and 'false' otherwise.
+     * Returns the number of items contained within this set.
      */
-    default boolean isEmpty() {
+    public int size();
+
+    /**
+     * Returns true if this set contains no items and false otherwise.
+     */
+    public default boolean isEmpty() {
         return this.size() == 0;
     }
 
     /**
-     * Returns a iterator of all items contained within this set.
-     *
-     * The iterator is not required to yield the items in any particular order.
-     *
-     * Implementation note: you may assume the client will NOT modify a
-     * set while simultaneously iterating over it.
+     * Returns all items contained within this set.
      */
-    Iterator<T> iterator();
+    public Iterator<T> iterator();
 }

@@ -54,9 +54,9 @@ public class HttpRequester implements AutoCloseable {
                 .setUserAgent(userAgent)
                 .setDefaultRequestConfig(RequestConfig
                         .copy(RequestConfig.DEFAULT)
-                        .setConnectionRequestTimeout(2000)
-                        .setConnectTimeout(2000)
-                        .setSocketTimeout(2000)
+                        .setConnectionRequestTimeout(5000)
+                        .setConnectTimeout(5000)
+                        .setSocketTimeout(5000)
                         .build())
                 .build();
         this.allowableContentTypes = Constants.contentTypeWhitelist();

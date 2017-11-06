@@ -40,6 +40,9 @@ public class PageRankAnalyzer {
 
         // Step 2: Use this graph to compute the page rank for each webpage
         //this.pageRanks = this.makePageRanks(graph, decay, limit, epsilon);
+
+        // Note: we don't store the graph as a field: once we've computed the
+        // page ranks, we no longer need it!
     }
 
     /**
