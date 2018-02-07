@@ -47,6 +47,9 @@ repositories {
 // Here, we list all the different libraries we plan on using.
 // Gradle will automatically download them from the repositories listed above.
 dependencies {
+    // We use jol to help us extract the approximate size of Java objects
+    compile group: 'org.openjdk.jol', name: 'jol-core', version: '0.9'
+
     // We use JSoup to parse web pages
     compile group: 'org.jsoup', name: 'jsoup', version: '1.8.3'
 

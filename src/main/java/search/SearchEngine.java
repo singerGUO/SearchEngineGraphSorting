@@ -7,8 +7,8 @@ import datastructures.interfaces.ISet;
 import misc.Searcher;
 import search.analyzers.PageRankAnalyzer;
 import search.analyzers.TfIdfAnalyzer;
-import search.misc.exceptions.DataExtractionException;
 import search.misc.Bridge;
+import search.misc.exceptions.DataExtractionException;
 import search.models.Result;
 import search.models.Webpage;
 import search.models.WebpageSummary;
@@ -20,9 +20,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class SearchEngine {
-    public static double PAGE_RANK_DECAY = 0.85;
-    public static double PAGE_RANK_EPSILON = 0.0001;
-    public static int PAGE_RANK_ITERATION_LIMIT = 200;
+    public static final double PAGE_RANK_DECAY = 0.85;
+    public static final double PAGE_RANK_EPSILON = 0.0001;
+    public static final int PAGE_RANK_ITERATION_LIMIT = 200;
 
     private ISet<WebpageSummary> pages;
     private TfIdfAnalyzer tfIdfAnalyzer;
@@ -113,9 +113,9 @@ public class SearchEngine {
         }
     }
 
-    private ISet<WebpageSummary> extractWebpageSummaries(ISet<Webpage> pages) {
+    private ISet<WebpageSummary> extractWebpageSummaries(ISet<Webpage> webpages) {
         ISet<WebpageSummary> output = new ChainedHashSet<>();
-        for (Webpage page : pages) {
+        for (Webpage page : webpages) {
             output.add(page.getSummary());
         }
         return output;

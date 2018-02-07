@@ -82,7 +82,7 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
         // given you.
         private IDictionary<K, V>[] chains;
 
-        private ChainedIterator(IDictionary<K, V>[] chains) {
+        public ChainedIterator(IDictionary<K, V>[] chains) {
             this.chains = chains;
             throw new NotYetImplementedException();
         }

@@ -1,13 +1,10 @@
 package datastructures.sorting;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
 
 import misc.BaseTest;
 import datastructures.concrete.ArrayHeap;
 import datastructures.interfaces.IPriorityQueue;
-import misc.exceptions.EmptyContainerException;
 import org.junit.Test;
 
 /**
@@ -23,5 +20,6 @@ public class TestArrayHeapFunctionality extends BaseTest {
         IPriorityQueue<Integer> heap = this.makeInstance();
         heap.insert(3);
         assertEquals(1, heap.size());
+        assertTrue(!heap.isEmpty());
     }
 }

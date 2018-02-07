@@ -90,7 +90,7 @@ public class TfIdfAnalyzer {
         // TODO: Replace this with actual, working code.
 
         // TODO: The pseudocode we gave you is not very efficient. When implementing,
-        // this smethod, you should:
+        // this method, you should:
         //
         // 1. Figure out what information can be precomputed in your constructor.
         //    Add a third field containing that information.

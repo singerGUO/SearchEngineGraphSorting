@@ -6,14 +6,21 @@ import datastructures.concrete.DoubleLinkedList;
 import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.interfaces.IDictionary;
 import datastructures.interfaces.IList;
-import search.misc.UnbufferedReader;
-import search.misc.exceptions.DataExtractionException;
-import search.misc.WebUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import search.misc.UnbufferedReader;
+import search.misc.WebUtils;
 import search.misc.WordTokenizer;
+import search.misc.exceptions.DataExtractionException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PushbackInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.StringTokenizer;
@@ -78,8 +85,8 @@ public class Webpage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         Webpage webpage = (Webpage) o;
 

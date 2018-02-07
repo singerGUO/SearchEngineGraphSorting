@@ -51,6 +51,12 @@ public class KVPair<K, V> {
 
     /**
      * Returns a hashcode based on both the key and the value's .hashCode() methods.
+     *
+     * This means it's possible to use a KVPair object as the key of a hash map.
+     * That said, it would be very unusual to want to do this.
+     *
+     * This method is provided more for completeness, not because we expect you
+     * will ever end up actually needing to use it.
      */
     @Override
     public int hashCode() {

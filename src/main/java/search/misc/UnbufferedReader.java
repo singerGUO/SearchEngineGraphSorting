@@ -1,9 +1,11 @@
 package search.misc;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PushbackInputStream;
 
 public class UnbufferedReader {
-    private static int EOF = -1;
+    private static final int EOF = -1;
     private PushbackInputStream stream;
 
     public UnbufferedReader(PushbackInputStream stream) {

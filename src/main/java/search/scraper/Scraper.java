@@ -9,7 +9,13 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.net.URI;
 import java.nio.file.Path;
@@ -122,8 +128,10 @@ public class Scraper {
 
         if (saveFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(saveFile))) {
-                for (String line; (line = reader.readLine()) != null; ) {
+                String line = reader.readLine();
+                while (line != null) {
                     this.alreadyEncountered.add(URI.create(line.trim()));
+                    line = reader.readLine();
                 }
             }
         }

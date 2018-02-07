@@ -1,11 +1,11 @@
 package datastructures.dictionaries;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-
 import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.interfaces.IDictionary;
 import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TestChainedHashDictionary extends TestDictionary {
     protected <K, V> IDictionary<K, V> newDictionary() {
@@ -18,6 +18,8 @@ public class TestChainedHashDictionary extends TestDictionary {
         for (int i = 0; i < 1000; i++) {
             map.put(new Wrapper<>("" + i, 0), i);
         }
+
+        assertEquals(1000, map.size());
 
         for (int i = 999; i >= 0; i--) {
             String key = "" + i;
@@ -63,7 +65,7 @@ public class TestChainedHashDictionary extends TestDictionary {
         assertFalse(dict.containsKey(key1));
     }
 
-    @Test(timeout=10* SECOND)
+    @Test(timeout=10*SECOND)
     public void stressTest() {
         int limit = 1000000;
         IDictionary<Integer, Integer> dict = this.newDictionary();

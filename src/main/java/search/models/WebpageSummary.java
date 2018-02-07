@@ -52,13 +52,13 @@ public class WebpageSummary {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         WebpageSummary that = (WebpageSummary) o;
 
-        if (!uri.equals(that.uri)) return false;
-        if (!title.equals(that.title)) return false;
+        if (!uri.equals(that.uri)) { return false; }
+        if (!title.equals(that.title)) { return false; }
         return blurb.equals(that.blurb);
     }
 

@@ -1,10 +1,7 @@
 package datastructures.concrete;
 
 import datastructures.interfaces.IPriorityQueue;
-import misc.exceptions.EmptyContainerException;
 import misc.exceptions.NotYetImplementedException;
-
-import java.util.Arrays;
 
 /**
  * See IPriorityQueue for details on what each method must do.

@@ -1,11 +1,9 @@
 package datastructures.concrete;
 
 import datastructures.interfaces.IList;
-import misc.exceptions.EmptyContainerException;
 import misc.exceptions.NotYetImplementedException;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * Replace this class with your DoubleLinkedList implementation from

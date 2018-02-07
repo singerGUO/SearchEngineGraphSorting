@@ -15,6 +15,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Note: Rather then running this class directly, run either
+ * TestArrayDictionary or TestChainedHashDictionary.
+ *
+ * Both classes will inherit (and re-use) the tests defined here.
+ */
 public abstract class TestDictionary extends BaseTest {
     protected abstract <K, V> IDictionary<K, V> newDictionary();
 

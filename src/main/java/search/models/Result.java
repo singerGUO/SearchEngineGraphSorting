@@ -57,12 +57,12 @@ public class Result implements Comparable<Result> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         Result result = (Result) o;
 
-        if (Double.compare(result.score, score) != 0) return false;
+        if (Double.compare(result.score, score) != 0) { return false; }
         return webpageSummary.equals(result.webpageSummary);
     }
 

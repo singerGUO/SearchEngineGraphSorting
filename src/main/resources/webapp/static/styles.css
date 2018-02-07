@@ -38,6 +38,18 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Exception message */
+
+pre {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+code {
+    font-family: Consolas, monaco, monospace;
+    font-align: left;
+}
+
 /* Search widgets */
 
 .searchbar {

@@ -83,6 +83,8 @@ public class PageRankAnalyzer {
 
             // Step 3: the convergence step should go here.
             // Return early if we've converged.
+            
+            throw new NotYetImplementedException();
         }
         throw new NotYetImplementedException();
     }
@@ -96,6 +98,6 @@ public class PageRankAnalyzer {
     public double computePageRank(URI pageUri) {
         // Implementation note: this method should be very simple: just one line!
         // TODO: Add working code here
-        return 0.0;
+        return 1.0;
     }
 }
