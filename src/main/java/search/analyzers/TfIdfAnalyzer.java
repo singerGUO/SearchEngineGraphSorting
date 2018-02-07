@@ -48,13 +48,13 @@ public class TfIdfAnalyzer {
 
     // Note: these private methods are suggestions or hints on how to structure your
     // code. However, since they're private, you're not obligated to implement exactly
-    // these methods: Feel free to change or modify these methods if you want. The
+    // these methods: feel free to change or modify these methods however you want. The
     // important thing is that your 'computeRelevance' method ultimately returns the
     // correct answer in an efficient manner.
 
     /**
-     * This method should return a dictionary mapping every single unique word found
-     * in any documents to their IDF score.
+     * Return a dictionary mapping every single unique word found
+     * in every single document to their IDF score.
      */
     private IDictionary<String, Double> computeIdfScores(ISet<Webpage> pages) {
         throw new NotYetImplementedException();
@@ -64,7 +64,7 @@ public class TfIdfAnalyzer {
      * Returns a dictionary mapping every unique word found in the given list
      * to their term frequency (TF) score.
      *
-     * We are treating the list of words as if it were a document.
+     * The input list represents the words contained within a single document.
      */
     private IDictionary<String, Double> computeTfScores(IList<String> words) {
         throw new NotYetImplementedException();
@@ -87,9 +87,7 @@ public class TfIdfAnalyzer {
      *               webpages given to the constructor.
      */
     public Double computeRelevance(IList<String> query, URI pageUri) {
-        // TODO: Replace this with actual, working code.
-
-        // TODO: The pseudocode we gave you is not very efficient. When implementing,
+        // Note: The pseudocode we gave you is not very efficient. When implementing,
         // this method, you should:
         //
         // 1. Figure out what information can be precomputed in your constructor.
