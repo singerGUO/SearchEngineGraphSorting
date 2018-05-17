@@ -71,7 +71,7 @@ dependencies {
     // generating hashes and checksums.
     compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
 
-    compile group: 'com.github.chimbori', name: 'crux', version: 'master'
+    compile group: 'com.github.chimbori', name: 'crux', version: 'v2.0.1'
 
     // We use this library for the web backend of our search engine.
     compile group: 'com.sparkjava', name: 'spark-core', version: '2.6.0'
