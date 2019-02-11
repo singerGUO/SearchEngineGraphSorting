@@ -21,7 +21,7 @@ public class PageRankAnalyzer {
      *
      * @param webpages  A set of all webpages we have parsed.
      * @param decay     Represents the "decay" factor when computing page rank (see spec).
-     * @param epsilon   When the difference in page ranks is less then or equal to this number,
+     * @param epsilon   When the difference in page ranks is less than or equal to this number,
      *                  stop iterating.
      * @param limit     The maximum number of iterations we spend computing page rank. This value
      *                  is meant as a safety valve to prevent us from infinite looping in case our
@@ -66,7 +66,7 @@ public class PageRankAnalyzer {
      * Precondition: assumes 'this.graphs' has previously been initialized.
      *
      * @param decay     Represents the "decay" factor when computing page rank (see spec).
-     * @param epsilon   When the difference in page ranks is less then or equal to this number,
+     * @param epsilon   When the difference in page ranks is less than or equal to this number,
      *                  stop iterating.
      * @param limit     The maximum number of iterations we spend computing page rank. This value
      *                  is meant as a safety valve to prevent us from infinite looping in case our

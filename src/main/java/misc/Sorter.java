@@ -3,20 +3,21 @@ package misc;
 import datastructures.interfaces.IList;
 import misc.exceptions.NotYetImplementedException;
 
-public class Searcher {
+public class Sorter {
     /**
      * This method takes the input list and returns the top k elements
      * in sorted order.
      *
      * So, the first element in the output list should be the "smallest"
-     * element; the last element should be the "biggest".
+     * element; the last element should be the "largest".
      *
-     * If the input list contains fewer then 'k' elements, return
+     * If the input list contains fewer than 'k' elements, return
      * a list containing all input.length elements in sorted order.
      *
      * This method must not modify the input list.
      *
      * @throws IllegalArgumentException  if k < 0
+     * @throws IllegalArgumentException  if input is null
      */
     public static <T extends Comparable<T>> IList<T> topKSort(int k, IList<T> input) {
         // Implementation notes:

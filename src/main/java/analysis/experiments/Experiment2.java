@@ -3,7 +3,7 @@ package analysis.experiments;
 import analysis.utils.AnalysisUtils;
 import analysis.utils.CsvWriter;
 import datastructures.interfaces.IList;
-import misc.Searcher;
+import misc.Sorter;
 
 public class Experiment2 {
     public static final int NUM_TRIALS = 5;
@@ -32,7 +32,7 @@ public class Experiment2 {
 
         long start = System.currentTimeMillis();
         for (int i = 0; i < 10; i++) {
-            Searcher.topKSort(k, list);
+            Sorter.topKSort(k, list);
         }
         return System.currentTimeMillis() - start;
     }

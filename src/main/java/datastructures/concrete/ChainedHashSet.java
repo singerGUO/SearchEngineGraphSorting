@@ -1,16 +1,22 @@
 package datastructures.concrete;
 
+import datastructures.concrete.dictionaries.ChainedHashDictionary;
+import datastructures.interfaces.IDictionary;
 import datastructures.interfaces.ISet;
 import misc.exceptions.NotYetImplementedException;
 
 import java.util.Iterator;
 
 /**
- * See ISet for details about what each method is expected to do.
+ * TODO: Replace this class with your ChainedHashSet implementation from the previous project.
  */
 public class ChainedHashSet<T> implements ISet<T> {
+    // This should be the only field you need
+    private IDictionary<T, Boolean> map;
+
     public ChainedHashSet() {
-        throw new NotYetImplementedException();
+        // No need to change this method
+        this.map = new ChainedHashDictionary<>();
     }
 
     @Override
@@ -35,6 +41,26 @@ public class ChainedHashSet<T> implements ISet<T> {
 
     @Override
     public Iterator<T> iterator() {
-        throw new NotYetImplementedException();
+        return new SetIterator<>(this.map.iterator());
+    }
+
+    private static class SetIterator<T> implements Iterator<T> {
+        // This should be the only field you need
+        private Iterator<KVPair<T, Boolean>> iter;
+
+        public SetIterator(Iterator<KVPair<T, Boolean>> iter) {
+            // No need to change this method.
+            this.iter = iter;
+        }
+
+        @Override
+        public boolean hasNext() {
+            throw new NotYetImplementedException();
+        }
+
+        @Override
+        public T next() {
+            throw new NotYetImplementedException();
+        }
     }
 }

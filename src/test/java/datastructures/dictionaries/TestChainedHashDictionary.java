@@ -1,15 +1,85 @@
 package datastructures.dictionaries;
 
+import datastructures.concrete.KVPair;
 import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.interfaces.IDictionary;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestChainedHashDictionary extends TestDictionary {
     protected <K, V> IDictionary<K, V> newDictionary() {
         return new ChainedHashDictionary<>();
+    }
+
+    @Test(timeout=SECOND)
+    public void testContainsMaintainsStateForIterator() {
+        IDictionary<String, String> map = this.makeBasicDictionary();
+
+        char mid = 'N';
+        for (char i = 'D'; i < mid; i++) {
+            map.put("key" + i, "val" + i);
+        }
+
+        for (char i = mid; i < 'Z'; i++) {
+            assertFalse(map.containsKey("key" + i));
+        }
+
+        boolean[] contained = new boolean[mid - 'A'];
+
+        int baseSize = 3;
+        for (KVPair<String, String> pair : map) {
+            char key = pair.getKey().charAt(baseSize);
+            char val = pair.getValue().charAt(baseSize);
+            assertEquals(key, val);
+
+            int letter = key - 'A';
+            if (letter > contained.length) {
+                Assert.fail("Invalid letter found: " + key);
+            }
+
+            if (contained[letter]) {
+                Assert.fail("Duplicate letter found: " + key);
+            }
+
+            contained[letter] = true;
+        }
+
+        for (boolean found : contained) {
+            assertTrue(found);
+        }
+    }
+
+    @Test(timeout=SECOND)
+    public void testBigHashCodesAndNull() {
+        IDictionary<Wrapper<String>, Integer> map = this.newDictionary();
+        int start = 10000;
+        int values = 500;
+        for (int i = start; i < start + values; i++) {
+            map.put(new Wrapper<>("" + i, i), i);
+        }
+
+        for (int i = start; i < start + values; i++) {
+            assertEquals(i, map.get(new Wrapper<>("" + i, i)));
+
+            assertFalse(map.containsKey(new Wrapper<>("no", i)));
+            assertFalse(map.containsKey(new Wrapper<>(null, i)));
+        }
+
+        for (int i = start; i < start + values; i++) {
+            map.put(new Wrapper<>("" + i, i), i + values);
+        }
+
+        for (int i = start; i < start + values; i++) {
+            assertEquals(i + values, map.get(new Wrapper<>("" + i, i)));
+        }
+        assertFalse(map.containsKey(null));
     }
 
     @Test(timeout=SECOND)
@@ -87,5 +157,13 @@ public class TestChainedHashDictionary extends TestDictionary {
             assertEquals(-i, dict.get(i));
             dict.remove(i);
         }
+    }
+
+    @Test(timeout=SECOND)
+    public void testPrivateFieldExample() {
+        IDictionary<String, String> map = this.makeBasicDictionary();
+        @SuppressWarnings("unchecked")
+        IDictionary<String, String>[] chains = getField(map, "chains", IDictionary[].class);
+        assertNotNull(chains);
     }
 }

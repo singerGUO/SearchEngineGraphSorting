@@ -1,0 +1,68 @@
+image: gradle:jdk8
+
+before_script:
+  - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/build.gradle -O build.gradle
+
+stages:
+  - compile
+  - test
+
+.shared: &shared
+  only:
+    refs:
+      - branches
+    changes:
+      - src/**/*
+  except:
+    refs:
+      - initial
+
+compile:
+  <<: *shared
+  stage: compile
+  script:
+    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/compile.sh -O compile.sh
+    - sh compile.sh
+  tags:
+    - hw5
+    - compile
+
+checkstyle:
+  <<: *shared
+  stage: test
+  script:
+    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/checkstyle.sh -O checkstyle.sh
+    - sh checkstyle.sh
+  tags:
+    - hw5
+    - checkstyle
+
+testPart1:
+  <<: *shared
+  stage: test
+  script:
+    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/test-p1.sh -O test-p1.sh
+    - sh test-p1.sh
+  tags:
+    - hw5
+    - test-p1
+
+testPart2:
+  <<: *shared
+  stage: test
+  script:
+    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/test-p2.sh -O test-p2.sh
+    - sh test-p2.sh
+  tags:
+    - hw5
+    - test-p2
+
+testPrev:
+  <<: *shared
+  stage: test
+  script:
+    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/test-prev.sh -O test-prev.sh
+    - sh test-prev.sh
+  tags:
+    - hw5
+    - test-prev

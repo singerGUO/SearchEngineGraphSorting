@@ -4,7 +4,7 @@ import datastructures.interfaces.IPriorityQueue;
 import misc.exceptions.NotYetImplementedException;
 
 /**
- * See IPriorityQueue for details on what each method must do.
+ * @see IPriorityQueue for details on what each method must do.
  */
 public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
     // See spec: you must implement a implement a 4-heap.
@@ -28,13 +28,13 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
      * Note that each element in the array will initially be null.
      */
     @SuppressWarnings("unchecked")
-    private T[] makeArrayOfT(int size) {
+    private T[] makeArrayOfT(int arraySize) {
         // This helper method is basically the same one we gave you
         // in ArrayDictionary and ChainedHashDictionary.
         //
         // As before, you do not need to understand how this method
         // works, and should not modify it in any way.
-        return (T[]) (new Comparable[size]);
+        return (T[]) (new Comparable[arraySize]);
     }
 
     @Override

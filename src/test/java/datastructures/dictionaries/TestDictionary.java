@@ -1,26 +1,29 @@
 package datastructures.dictionaries;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
-
-import misc.BaseTest;
 import datastructures.concrete.KVPair;
 import datastructures.interfaces.IDictionary;
+import misc.BaseTest;
 import misc.exceptions.NoSuchKeyException;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
- * Note: Rather then running this class directly, run either
+ * Note: Rather than running this class directly, run either
  * TestArrayDictionary or TestChainedHashDictionary.
  *
  * Both classes will inherit (and re-use) the tests defined here.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public abstract class TestDictionary extends BaseTest {
     protected abstract <K, V> IDictionary<K, V> newDictionary();
 
@@ -63,6 +66,35 @@ public abstract class TestDictionary extends BaseTest {
     }
 
     @Test(timeout=SECOND)
+    public void basicTestConstructor() {
+        IDictionary<String, String> dict = this.makeBasicDictionary();
+        this.assertDictMatches(
+                new String[] {"keyA", "keyB", "keyC"},
+                new String[] {"valA", "valB", "valC"},
+                dict);
+    }
+
+    @Test(timeout=SECOND)
+    public void basicTestPutUpdatesSize() {
+        IDictionary<String, String> dict = this.newDictionary();
+        int initSize = dict.size();
+        dict.put("keyA", "valA");
+
+        assertEquals(initSize + 1, dict.size());
+    }
+
+    @Test(timeout=SECOND)
+    public void basicTestPutDuplicateKey() {
+        IDictionary<String, String> dict = this.newDictionary();
+        dict.put("a", "b");
+        int size = dict.size();
+
+        dict.put("a", "c");
+        assertEquals(size, dict.size());
+        assertEquals("c", dict.get("a"));
+    }
+
+    @Test(timeout=SECOND)
     public void testPutAndGetBasic() {
         IDictionary<String, String> dict = this.makeBasicDictionary();
 
@@ -73,7 +105,7 @@ public abstract class TestDictionary extends BaseTest {
     }
 
     @Test(timeout=SECOND)
-    public void testPutAndGetSameKeyRepeated() {
+    public void testPutDuplicateKeyMultiple() {
         IDictionary<Integer, Integer> dict = this.newDictionary();
 
         // First insertion
@@ -99,7 +131,7 @@ public abstract class TestDictionary extends BaseTest {
     }
 
     @Test(timeout=SECOND)
-    public void testPutAndGetSameKeyRepeatedMany() {
+    public void testPutDuplicateKeyMany() {
         IDictionary<String, String> dict = this.newDictionary();
         dict.put("a", "1");
         dict.put("b", "1");
@@ -116,7 +148,7 @@ public abstract class TestDictionary extends BaseTest {
     }
 
     @Test(timeout=SECOND)
-    public void testGetErrorHandling() {
+    public void testGetNonexistentKeyThrowsException() {
         IDictionary<String, Integer> dict = this.newDictionary();
 
         try {
@@ -179,7 +211,7 @@ public abstract class TestDictionary extends BaseTest {
     }
 
     @Test(timeout=SECOND)
-    public void testRemoveDuplicate() {
+    public void testPutDuplicateKeyAndRemove() {
         IDictionary<String, String> dict = this.newDictionary();
         dict.put("a", "1");
         dict.put("b", "2");
@@ -208,7 +240,7 @@ public abstract class TestDictionary extends BaseTest {
     }
 
     @Test(timeout=SECOND)
-    public void testRemoveErrorHandling() {
+    public void testRemoveNonexistentThrowsException() {
         IDictionary<Integer, String> list = this.newDictionary();
         list.put(3, "a");
 
@@ -230,8 +262,8 @@ public abstract class TestDictionary extends BaseTest {
     }
 
 
-    @Test(timeout=5 * SECOND)
-    public void testAddGetMany() {
+    @Test(timeout=10 * SECOND)
+    public void testPutRemoveMany() {
         int cap = 15000;
         IDictionary<Integer, Integer> dict = this.newDictionary();
 
@@ -241,10 +273,12 @@ public abstract class TestDictionary extends BaseTest {
             }
 
             for (int i = 0; i < cap; i++) {
-                int value = dict.get(i);
+                int value = dict.remove(i);
                 assertEquals(i * 2, value);
             }
         }
+        assertEquals(0, dict.size());
+        assertTrue(dict.isEmpty());
     }
 
     @Test(timeout=SECOND)
@@ -269,21 +303,27 @@ public abstract class TestDictionary extends BaseTest {
     }
 
     @Test(timeout=SECOND)
-    public void testLargeKeys() {
+    public void testEqualKeys() {
         // Force keys to be two separate objects
         String key1 = "abcdefghijklmnopqrstuvwxyz";
         String key2 = key1 + "";
 
         IDictionary<String, String> dict = this.newDictionary();
-        dict.put(key1, "value");
+        dict.put(key1, "value1");
 
-        assertEquals("value", dict.get(key1));
-        assertEquals("value", dict.get(key2));
-
+        assertEquals("value1", dict.get(key1));
+        assertEquals("value1", dict.get(key2));
         assertTrue(dict.containsKey(key1));
         assertTrue(dict.containsKey(key2));
 
-        assertEquals("value", dict.remove(key2));
+        dict.put(key2, "value2");
+
+        assertEquals("value2", dict.get(key1));
+        assertEquals("value2", dict.get(key2));
+        assertTrue(dict.containsKey(key1));
+        assertTrue(dict.containsKey(key2));
+
+        assertEquals("value2", dict.remove(key1));
 
         assertFalse(dict.containsKey(key1));
         assertFalse(dict.containsKey(key2));
@@ -304,7 +344,7 @@ public abstract class TestDictionary extends BaseTest {
     }
 
     @Test(timeout=SECOND)
-    public void testNonNullKeys() {
+    public void testCustomObjectKeys() {
         IDictionary<Wrapper<String>, String> dict = this.newDictionary();
         dict.put(new Wrapper<>("foo"), "foo");
         dict.put(new Wrapper<>("bar"), "bar");
@@ -362,7 +402,7 @@ public abstract class TestDictionary extends BaseTest {
         map.put("", "world");
 
         boolean metNullKey = false;
-        boolean metEmptyKey = true;
+        boolean metEmptyKey = false;
         int numItems = 0;
         for (KVPair<String, String> pair : map) {
             if (pair.getKey() == null) {

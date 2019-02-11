@@ -4,7 +4,7 @@ import datastructures.concrete.ChainedHashSet;
 import datastructures.concrete.DoubleLinkedList;
 import datastructures.interfaces.IList;
 import datastructures.interfaces.ISet;
-import misc.Searcher;
+import misc.Sorter;
 import search.analyzers.PageRankAnalyzer;
 import search.analyzers.TfIdfAnalyzer;
 import search.misc.Bridge;
@@ -90,7 +90,7 @@ public class SearchEngine {
             results.add(new Result(summary, score));
         }
 
-        IList<Result> topK = Searcher.topKSort(k, results);
+        IList<Result> topK = Sorter.topKSort(k, results);
 
         IList<Result> reversed = new DoubleLinkedList<>();
         for (Result res : topK) {

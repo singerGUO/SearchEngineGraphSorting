@@ -2,6 +2,8 @@ package misc;
 
 import org.junit.Assert;
 
+import java.lang.reflect.Field;
+
 public class BaseTest {
     protected static final int SECOND = 1000;
 
@@ -19,6 +21,20 @@ public class BaseTest {
 
     protected static <T> void assertEquals(String message, T expected, T actual) {
         Assert.assertEquals(message, expected, actual);
+    }
+
+    protected static <T> T getField(Object obj, String fieldName, Class<T> expectedType) {
+        return expectedType.cast(getField(obj, fieldName));
+    }
+
+    protected static Object getField(Object obj, String fieldName) {
+        try {
+            Field field = obj.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.get(obj);
+        } catch (IllegalAccessException | NoSuchFieldException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     /**

@@ -46,9 +46,9 @@ public class Result implements Comparable<Result> {
     /**
      * Compares to Result objects by their score.
      *
-     * If the this result has a lower score then the other one, returns a negative number.
+     * If the this result has a lower score than the other one, returns a negative number.
      * If the this result has the same score as this one, returns 0.
-     * If the this result has a higher score then the other one, returns a positive number.
+     * If the this result has a higher score than the other one, returns a positive number.
      */
     @Override
     public int compareTo(Result other) {

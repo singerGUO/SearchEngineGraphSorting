@@ -17,16 +17,19 @@
  * https://docs.gradle.org/3.1/userguide/tutorial_java_projects.html
  */
 
-// Apply the java plugin to add support for Java
-apply plugin: 'java'
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
 
-// Apply the 'eclipse' plugin so we can generate Eclipse project files
-apply plugin: 'eclipse'
+    // Apply IDE plugins so we can generate IDE project files
+    id 'eclipse'
+    id 'idea'
 
-// Apply the 'idea' plugin so we can generate IntelliJ project files
-apply plugin: 'idea'
+    id 'checkstyle'
+    id 'com.adarshr.test-logger' version '1.6.0'
+}
 
-// This project uses a few 3rd party libraries. Rather then downloading
+// This project uses a few 3rd party libraries. Rather than downloading
 // and installing them manually, which can be highly error-prone, we
 // have Gradle do it for us. In the "repositories" section, we specify
 // where we want to search for these 3rd party packages.
@@ -41,7 +44,7 @@ repositories {
     // the actual website.
     mavenLocal()
     mavenCentral()
-    maven { url "https://jitpack.io" }
+    maven { url 'https://jitpack.io' }
 }
 
 // Here, we list all the different libraries we plan on using.
@@ -55,7 +58,7 @@ dependencies {
 
     // We use RE2/J as a drop-in replacement for Java's built-in regex parser.
     //
-    // RE2/J is more efficient then Java's regex engine in many cases,
+    // RE2/J is more efficient than Java's regex engine in many cases,
     // but in exchange, is strictly less powerful.
     //
     // (More precisely, RE2/J works by building an NFA representing the
@@ -89,7 +92,7 @@ dependencies {
 
 // Configure support to make this a command-line app
 apply plugin: 'application'
-mainClassName = "noodle.Main"
+mainClassName = 'noodle.Main'
 
 run {
     standardInput = System.in
@@ -106,17 +109,34 @@ task generateDocs(type: Javadoc) {
 allprojects {
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+            options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
         }
     }
 }
 
+testlogger {
+    theme 'standard'
+    showExceptions false
+    showSummary false
+    slowThreshold 60000
+    showStandardStreams false
+    showPassedStandardStreams false
+    showSkippedStandardStreams false
+    showFailedStandardStreams false
+}
+
 // Log stdout and stderr in tests
 test {
-    testLogging {
-        events = ["passed", "skipped", "failed"]
-        showStandardStreams = true
-        exceptionFormat = "full"
+    def profileString = System.properties['test.profile'] ?: ''
+    def profiles = profileString.split(',')
+    if ('hw2' in profiles) {
+        include 'datastructures/TestDoubleLinkedList*'
+        include 'datastructures/dictionaries/TestArrayDictionary*'
+    }
+    if ('hw3' in profiles) {
+        include 'datastructures/dictionaries/TestArrayDictionary*'
+        include 'datastructures/dictionaries/TestChainedHashDictionary*'
+        include 'datastructures/TestChainedHashSet*'
     }
 
     reports {
@@ -125,3 +145,51 @@ test {
     }
 }
 
+checkstyle {
+    toolVersion = '8.2'
+}
+
+checkstyleMain {
+    def profileString = System.properties['test.profile'] ?: ''
+    def profiles = profileString.split(',')
+    if ('hw2' in profiles) {
+        include 'datastructures/concrete/DoubleLinkedList.java'
+        include 'datastructures/concrete/dictionaries/ArrayDictionary.java'
+    }
+    if ('hw3' in profiles) {
+        include 'datastructures/concrete/dictionaries/ArrayDictionary.java'
+        include 'datastructures/concrete/dictionaries/ChainedHashDictionary.java'
+        include 'datastructures/concrete/ChainedHashSet.java'
+    }
+    if ('hw5p1' in profiles) {
+        include 'datastructures/concrete/ArrayHeap.java'
+        include 'misc/Sorter.java'
+    }
+    if ('hw5p2' in profiles) {
+        include 'search/analyzers/TfIdfAnalyzer.java'
+        include 'search/analyzers/PageRankAnalyzer.java'
+    }
+    reports {
+        html.enabled = false
+        xml.enabled = false
+    }
+}
+
+checkstyleTest {
+    def profileString = System.properties['test.profile'] ?: ''
+    def profiles = profileString.split(',')
+    def included = false
+    if ('hw5p1' in profiles) {
+        included = true
+        include 'datastructures/sorting/TestArrayHeapFunctionality.java'
+        include 'datastructures/sorting/TestArrayHeapAndSorterStress.java'
+        include 'datastructures/sorting/TestSorterFunctionality.java'
+    }
+    if (!included && ('hw2' in profiles || 'hw3' in profiles || 'hw5p1' in profiles)) {
+        exclude '*'
+    }
+    reports {
+        html.enabled = false
+        xml.enabled = false
+    }
+}

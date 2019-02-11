@@ -6,8 +6,7 @@ import misc.exceptions.NotYetImplementedException;
 import java.util.Iterator;
 
 /**
- * Replace this class with your DoubleLinkedList implementation from
- * project 1.
+ * TODO: Replace this class with your DoubleLinkedList implementation from the first project.
  */
 public class DoubleLinkedList<T> implements IList<T> {
     public DoubleLinkedList() {

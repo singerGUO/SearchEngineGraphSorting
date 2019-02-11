@@ -7,7 +7,7 @@ import misc.exceptions.NotYetImplementedException;
 import java.util.Iterator;
 
 /**
- * Replace this class with your ArrayDictionary implementation from project 1.
+ * TODO: Replace this class with your ArrayDictionary implementation from the first project.
  */
 public class ArrayDictionary<K, V> implements IDictionary<K, V> {
     public ArrayDictionary() {
