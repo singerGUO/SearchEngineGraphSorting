@@ -27,37 +27,47 @@ compile:
     - hw5
     - compile
 
-checkstyle:
+checkstyle-p1:
   <<: *shared
   stage: test
   script:
-    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/checkstyle.sh -O checkstyle.sh
-    - sh checkstyle.sh
+    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/p1/checkstyle.sh -O checkstyle-p1.sh
+    - sh checkstyle-p1.sh
   tags:
     - hw5
     - checkstyle
 
-testPart1:
+checkstyle-p2:
   <<: *shared
   stage: test
   script:
-    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/test-p1.sh -O test-p1.sh
+    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/p2/checkstyle.sh -O checkstyle-p2.sh
+    - sh checkstyle-p2.sh
+  tags:
+    - hw5
+    - checkstyle
+
+test-p1:
+  <<: *shared
+  stage: test
+  script:
+    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/p1/test.sh -O test-p1.sh
     - sh test-p1.sh
   tags:
     - hw5
     - test-p1
 
-testPart2:
+test-p2:
   <<: *shared
   stage: test
   script:
-    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/test-p2.sh -O test-p2.sh
+    - wget -q https://courses.cs.washington.edu/courses/cse373/19wi/files/homework/scripts/hw5/p2/test.sh -O test-p2.sh
     - sh test-p2.sh
   tags:
     - hw5
     - test-p2
 
-testPrev:
+test-prev:
   <<: *shared
   stage: test
   script:

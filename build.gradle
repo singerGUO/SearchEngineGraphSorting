@@ -125,7 +125,6 @@ testlogger {
     showFailedStandardStreams false
 }
 
-// Log stdout and stderr in tests
 test {
     def profileString = System.properties['test.profile'] ?: ''
     def profiles = profileString.split(',')
@@ -137,6 +136,18 @@ test {
         include 'datastructures/dictionaries/TestArrayDictionary*'
         include 'datastructures/dictionaries/TestChainedHashDictionary*'
         include 'datastructures/TestChainedHashSet*'
+    }
+    if ('hw5p1' in profiles || 'hw5' in profiles) {
+        include 'datastructures/sorting/TestArrayHeapAndSorterStress'
+        include 'datastructures/sorting/TestArrayHeapFunctionality'
+        include 'datastructures/sorting/TestSorterFunctionality'
+    }
+    if ('hw5p2' in profiles || 'hw5' in profiles) {
+        include 'search/TestTfIdfAnalyzer'
+        include 'search/TestPageRankAnalyzer'
+    }
+    if ('custom' in profiles) {
+        include '**/Test*Custom*'
     }
 
     reports {
@@ -161,14 +172,15 @@ checkstyleMain {
         include 'datastructures/concrete/dictionaries/ChainedHashDictionary.java'
         include 'datastructures/concrete/ChainedHashSet.java'
     }
-    if ('hw5p1' in profiles) {
+    if ('hw5p1' in profiles || 'hw5' in profiles) {
         include 'datastructures/concrete/ArrayHeap.java'
         include 'misc/Sorter.java'
     }
-    if ('hw5p2' in profiles) {
+    if ('hw5p2' in profiles || 'hw5' in profiles) {
         include 'search/analyzers/TfIdfAnalyzer.java'
         include 'search/analyzers/PageRankAnalyzer.java'
     }
+
     reports {
         html.enabled = false
         xml.enabled = false
@@ -179,15 +191,16 @@ checkstyleTest {
     def profileString = System.properties['test.profile'] ?: ''
     def profiles = profileString.split(',')
     def included = false
-    if ('hw5p1' in profiles) {
+    if ('hw5p1' in profiles || 'hw5' in profiles) {
         included = true
         include 'datastructures/sorting/TestArrayHeapFunctionality.java'
         include 'datastructures/sorting/TestArrayHeapAndSorterStress.java'
         include 'datastructures/sorting/TestSorterFunctionality.java'
     }
-    if (!included && ('hw2' in profiles || 'hw3' in profiles || 'hw5p1' in profiles)) {
+    if (!included && ('hw2' in profiles || 'hw3' in profiles || 'hw5p2' in profiles)) {
         exclude '*'
     }
+
     reports {
         html.enabled = false
         xml.enabled = false
