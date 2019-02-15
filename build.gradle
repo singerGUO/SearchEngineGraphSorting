@@ -138,13 +138,13 @@ test {
         include 'datastructures/TestChainedHashSet*'
     }
     if ('hw5p1' in profiles || 'hw5' in profiles) {
-        include 'datastructures/sorting/TestArrayHeapAndSorterStress'
-        include 'datastructures/sorting/TestArrayHeapFunctionality'
-        include 'datastructures/sorting/TestSorterFunctionality'
+        include 'datastructures/sorting/TestArrayHeapAndSorterStress*'
+        include 'datastructures/sorting/TestArrayHeapFunctionality*'
+        include 'datastructures/sorting/TestSorterFunctionality*'
     }
     if ('hw5p2' in profiles || 'hw5' in profiles) {
-        include 'search/TestTfIdfAnalyzer'
-        include 'search/TestPageRankAnalyzer'
+        include 'search/TestTfIdfAnalyzer*'
+        include 'search/TestPageRankAnalyzer*'
     }
     if ('custom' in profiles) {
         include '**/Test*Custom*'
