@@ -21,7 +21,7 @@ public class Main {
         Webapp app = new Webapp(engine, SITE_TITLE, PORT);
 
         System.out.println(String.format(
-                "Ready! Opening 'http://localhost:%d' in your web browser now.",
+                "Ready! Open 'http://localhost:%d' in your web browser to access the search engine.",
                 PORT));
         app.launch();
     }
