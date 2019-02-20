@@ -1,14 +1,18 @@
 package datastructures.concrete;
 
+//import datastructures.concrete.dictionaries.ArrayDictionary;
 import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.interfaces.IDictionary;
 import datastructures.interfaces.ISet;
-import misc.exceptions.NotYetImplementedException;
+import misc.exceptions.NoSuchKeyException;
+//import misc.exceptions.NoSuchKeyException;
+//import misc.exceptions.NotYetImplementedException;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
- * TODO: Replace this class with your ChainedHashSet implementation from the previous project.
+ * @see ISet for more details on what each method is supposed to do.
  */
 public class ChainedHashSet<T> implements ISet<T> {
     // This should be the only field you need
@@ -21,22 +25,31 @@ public class ChainedHashSet<T> implements ISet<T> {
 
     @Override
     public void add(T item) {
-        throw new NotYetImplementedException();
+        map.put(item, true);
+
+
     }
 
     @Override
     public void remove(T item) {
-        throw new NotYetImplementedException();
+
+        try {
+            map.remove(item);
+
+        } catch (NoSuchKeyException ex) {
+            throw new NoSuchElementException();
+        }
     }
+
 
     @Override
     public boolean contains(T item) {
-        throw new NotYetImplementedException();
+        return map.containsKey(item);
     }
 
     @Override
     public int size() {
-        throw new NotYetImplementedException();
+        return map.size();
     }
 
     @Override
@@ -55,12 +68,16 @@ public class ChainedHashSet<T> implements ISet<T> {
 
         @Override
         public boolean hasNext() {
-            throw new NotYetImplementedException();
+            return iter.hasNext();
         }
 
         @Override
         public T next() {
-            throw new NotYetImplementedException();
+            if (iter.hasNext()) {
+                return iter.next().getKey();
+            } else {
+                throw new NoSuchElementException();
+            }
         }
     }
 }
