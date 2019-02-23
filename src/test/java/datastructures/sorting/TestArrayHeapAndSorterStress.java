@@ -57,7 +57,7 @@ public class TestArrayHeapAndSorterStress extends BaseTest {
             heap.removeMin();
             fail("emptyContainerException expected");
         } catch (EmptyContainerException ex) {
-
+            //do nothing
         }
     }
 

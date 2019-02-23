@@ -80,6 +80,7 @@ public class TestArrayHeapFunctionality extends BaseTest {
             heap.removeMin();
             fail("EmptyConatiner Exection");
         } catch (EmptyContainerException ex) {
+            //do nothing
 
         }
 
