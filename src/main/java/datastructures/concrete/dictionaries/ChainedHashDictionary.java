@@ -15,13 +15,21 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
     // You may not change or rename this field: we will be inspecting
     // it using our private tests.
     private IDictionary<K, V>[] chains;
-    private final int overallSize = 10001;
+    private final int overallSize = 10;
+    private double loadfactor;
     private int size;
+    private int length;
+
+
 
     // You're encouraged to add extra fields (and helper methods) though!
 
     public ChainedHashDictionary() {
+        length = overallSize;
+        loadfactor = 0.75;
+
         size = 0;
+
         chains = makeArrayOfChains();
         for (int i = 0; i < overallSize; i++) {
             chains[i] = new ArrayDictionary<>();
@@ -40,7 +48,7 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
         // See ArrayDictionary's makeArrayOfPairs(...) method for
         // more background on why we need this method.
 
-        return (IDictionary<K, V>[]) new IDictionary[10001];
+        return (IDictionary<K, V>[]) new IDictionary[length];
     }
 
     @Override
@@ -54,7 +62,7 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
             throw new NullPointerException();
         }
         int hashCode = key.hashCode();
-        int index = Math.abs(hashCode % overallSize);
+        int index = Math.abs(hashCode % length);
 
         for (KVPair<K, V> pair : chains[index]) {
             if (pair.getKey().equals(key)) {
@@ -68,6 +76,30 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
 
     @Override
     public void put(K key, V value) {
+
+        if (size >= length * 0.75) {
+            length *= 2;
+            IDictionary<K, V>[] larger = makeArrayOfChains();
+            for (int i = 0; i < length; i++) {
+                larger[i] = new ArrayDictionary<>();
+            }
+            for (int i = 0; i < length / 2; i++) {
+
+                for (KVPair<K, V> pair : chains[i]) {
+                    if (pair.getKey() == null) {
+
+                        larger[0].put(key, value);
+
+                    }
+                    int newAddress = Math.abs(pair.getKey().hashCode() % larger.length);
+                    larger[newAddress].put(pair.getKey(), pair.getValue());
+
+                }
+            }
+
+            chains = larger;
+        }
+
         if (key == null) {
             if (!chains[0].containsKey(key)) {
                 size++;
@@ -76,12 +108,15 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
             return;
         }
         int hashCode = key.hashCode();
-        int index = Math.abs(hashCode % overallSize);
+        int index = Math.abs(hashCode % length);
         if (!chains[index].containsKey(key)) {
             size++;
         }
         chains[index].put(key, value);
+
     }
+
+
 
     @Override
     public V remove(K key) {
@@ -91,7 +126,7 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
 
 
         int hashCode = key.hashCode();
-        int index = Math.abs(hashCode % overallSize);
+        int index = Math.abs(hashCode % length);
         // try {
         //     chains[index].remove(key);
         //
@@ -109,7 +144,7 @@ public class ChainedHashDictionary<K, V> implements IDictionary<K, V> {
             return chains[0].containsKey(null);
         }
         int hashCode = key.hashCode();
-        int index = Math.abs(hashCode % overallSize);
+        int index = Math.abs(hashCode % length);
         return chains[index].containsKey(key);
     }
 

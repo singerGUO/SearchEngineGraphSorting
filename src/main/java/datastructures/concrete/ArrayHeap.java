@@ -58,7 +58,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
 
         while (child < size) {
 
-            for (int i = child + 1; i < child + NUM_CHILDREN + 1; i++) {
+            for (int i = child; i < child + NUM_CHILDREN + 1; i++) {
                 if (i < size && lessThan(heap[i], heap[minIndex])) {
                     minIndex = i;
                 }

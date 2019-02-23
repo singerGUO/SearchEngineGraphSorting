@@ -26,11 +26,14 @@ public interface IDictionary<K, V> extends Iterable<KVPair<K, V>> {
      *       it with a more efficient version.
      */
     public default V getOrDefault(K key, V defaultValue) {
+
+
         if (this.containsKey(key)) {
             return this.get(key);
         } else {
             return defaultValue;
         }
+
     }
 
     /**

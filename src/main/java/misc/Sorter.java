@@ -45,12 +45,26 @@ public class Sorter {
             return new DoubleLinkedList<>();
         }
         if (size < k) {
-            throw new IllegalArgumentException();
+            k = size;
         }
 
 
         for (T item : input) {
             heap.insert(item);
+            if (heap.size() > k) {
+                heap.removeMin();
+            }
+        }
+
+        //
+        // for (T item : input) {
+        //     heap.insert(item);
+        // }
+        // while (heap.size()>k){
+        //     heap.removeMin();
+        // }
+        for (int i = 0; i < k; i++) {
+            ilist.add(heap.removeMin());
         }
         return ilist;
 
