@@ -1,0 +1,77 @@
+# Feedback
+
+Group kingfisher: yank4, zhengg3
+
+Commit hash: e28e15bc86af1c3c0db94193e688b5b73af7d734
+
+Raw score: 53 / 60
+
+## Checkstyle
+
+Score: 5 / 5
+
+## ArrayHeap
+
+Score: 15 / 15
+
+-   PASS: (weight=1.0) testInsertNullEntriesThrowsException
+-   PASS: (weight=1.0) testRandomEntries
+-   PASS: (weight=1.0) testSimpleUsage
+-   PASS: (weight=1.0) testPeekOnEmptyQueueThrowsException
+-   PASS: (weight=1.0) testPeekMin
+-   PASS: (weight=1.0) testInsertDuplicateEntries
+-   PASS: (weight=1.0) testInternalStructure
+-   PASS: (weight=1.0) testInsertMany
+-   PASS: (weight=1.0) testStringEntries
+-   PASS: (weight=1.0) testRemoveMinOnEmptyQueueThrowsException
+
+## Sorter
+
+Score: 15 / 15
+
+-   PASS: (weight=1.0) testKIsZero
+-   PASS: (weight=1.0) testKIsNegative
+-   PASS: (weight=1.0) testKEqualsN
+-   PASS: (weight=1.0) testNonIntegerEntries
+-   PASS: (weight=1.0) testKIs1
+-   PASS: (weight=1.0) testNIs1
+-   PASS: (weight=1.0) testKIsGreaterThanN
+-   PASS: (weight=1.0) testInputListNotMutated
+-   PASS: (weight=1.0) testKIsLessThanN
+-   PASS: (weight=1.0) testAlreadySortedInput
+-   PASS: (weight=4.0) testIsNLogK
+
+## TestArrayHeapAndSorterStress
+
+Score: 2 / 5
+
+-   PASS: (weight=1.0) AllOk
+-   FAIL: (weight=1.0) DeliberatelyInefficient
+        Unable to find bug with ArrayHeap with deliberately inefficient
+
+## TestSorterFunctionality
+
+Score: 8 / 10
+
+-   PASS: (weight=1.0) AllOk
+-   FAIL: (weight=1.0) DoesNotThrowException
+        Unable to find bug with Sorter with does not throw exception
+
+-   PASS: (weight=1.0) DoesNotHandleKZeroCase
+-   PASS: (weight=1.0) AssumesKAlwaysLessThanN
+-   PASS: (weight=1.0) OffByOneErrorInLoop
+
+## TestArrayHeapFunctionality
+
+Score: 8 / 10
+
+-   PASS: (weight=1.0) AllOk
+-   FAIL: (weight=1.0) NoResize
+        Unable to find bug with ArrayHeap with no resize
+
+-   PASS: (weight=1.0) NoExceptionInPeek
+-   PASS: (weight=1.0) NoExceptionInRemovemin
+-   PASS: (weight=1.0) NoExceptionInInsert
+-   PASS: (weight=1.0) InsertDoesNotUpdateSize
+-   PASS: (weight=1.0) RemoveminDoesNotUpdateSize
+-   PASS: (weight=1.0) AssumesAllParentsHaveFourChildren
