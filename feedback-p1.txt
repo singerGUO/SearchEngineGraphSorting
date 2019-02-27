@@ -15,31 +15,101 @@ Score: 5 / 5
 Score: 15 / 15
 
 -   PASS: (weight=1.0) testInsertNullEntriesThrowsException
+        Description: This test verifies that the correct exception is throw when null values are
+            inserted into your heap.
+
 -   PASS: (weight=1.0) testRandomEntries
+        Description: This test adds random values to the heap a random number of times. It then
+            empties the heap and verifies that peekMin and removeMin work over the whole heap and
+            return the expected sorted sequence. This is done for 1000 trials.
+
 -   PASS: (weight=1.0) testSimpleUsage
+        Description: This is a "average case" test that relies on insertions, removeMins and size
+            operations.
+
 -   PASS: (weight=1.0) testPeekOnEmptyQueueThrowsException
+        Description: Calling peekMin on an empty ArrayHeap should throw an EmptyContainerException -
+            if this test fails, that was not the case for your code. This test also inserts and
+            removes before testing the EmptyContainerException case.
+
 -   PASS: (weight=1.0) testPeekMin
+        Description: This tests both that peekMin returns the minimum and that subsequently calling
+            removeMin gives you the same value.
+
 -   PASS: (weight=1.0) testInsertDuplicateEntries
+        Description: This test inserts the same few unique elements ~10,000 times. Then it verifies
+            that peekMin and removeMin work over the whole heap will return the expected sorted
+            sequence.
+
 -   PASS: (weight=1.0) testInternalStructure
+        Description: This method inserts many random elements (order of magnitude 10,000). Then it
+            loops less-than-the-size number of times and randomly chooses to insert or removeMin
+            each loop iteration. After, we use reflection to verify that internal array correctly
+            represents a min-4-heap, where each value is smaller than or equal to its (at most) 4
+            children.
+
 -   PASS: (weight=1.0) testInsertMany
+        Description: This test inserts many integer elements (order of magnitude is in the
+            thousands), and verifies the many calls to removeMin return a sequence that is
+            increasing in value. It removes every element from the heap in the end. Additionally,
+            all the values are unique.
+
 -   PASS: (weight=1.0) testStringEntries
+        Description: This test inserts a handful (3 levels) of String elements and checks that
+            peekMin then removeMin over the whole heap will return the expected sorted sequence.
+
 -   PASS: (weight=1.0) testRemoveMinOnEmptyQueueThrowsException
+        Description: Calling removeMin on an empty ArrayHeap should throw an EmptyContainerException
+            - if this test fails, that was not the case for your code. This test also inserts and
+            removes before testing the EmptyContainerException case.
 
 ## Sorter
 
 Score: 15 / 15
 
 -   PASS: (weight=1.0) testKIsZero
+        Description: This test verifies the top 0 elements are returned for k = 0 (i.e., the output
+            is a list of size 0).
+
 -   PASS: (weight=1.0) testKIsNegative
+        Description: This test verifies that the correct exception is thrown for negative values of
+            k.
+
 -   PASS: (weight=1.0) testKEqualsN
+        Description: This test verifies the corrected sorted sequence is returned for a random list
+            of size ~100 and k = that size.
+
 -   PASS: (weight=1.0) testNonIntegerEntries
+        Description: This test verifies a List<String> as the input will return the correct
+            topKSort, for small k and list size.
+
 -   PASS: (weight=1.0) testKIs1
+        Description: This test verifies the correct sorted sequence is returned for k of 1 and a
+            reasonably large n.
+
 -   PASS: (weight=1.0) testNIs1
+        Description: This test verifies the correct sorted sequence is returned for n of 1 and a
+            small k.
+
 -   PASS: (weight=1.0) testKIsGreaterThanN
+        Description: This test verifies the correct sorted sequence is returned for a random list of
+            size ~100 and k is larger.
+
 -   PASS: (weight=1.0) testInputListNotMutated
+        Description: This test verifies the input object is not mutated (modified) - see the
+            documentation for topKSort on mutation.
+
 -   PASS: (weight=1.0) testKIsLessThanN
+        Description: This test verifies the corrected sorted sequence is returned for a random list
+            of size ~100 and k < 10.
+
 -   PASS: (weight=1.0) testAlreadySortedInput
+        Description: This test verifies a corrected sorted sequence as input is still sorted and
+            returned properly.
+
 -   PASS: (weight=4.0) testIsNLogK
+        Description: This test is on the runners; it checks whether the runtime of topKSort is in
+            O(n*log(k)) by counting comparison operations.
 
 ## TestArrayHeapAndSorterStress
 
@@ -55,11 +125,13 @@ Score: 8 / 10
 
 -   PASS: (weight=1.0) AllOk
 -   FAIL: (weight=1.0) DoesNotThrowException
+        Description: This buggy case does not throw an exception if k is negative.
         Unable to find bug with Sorter with does not throw exception
 
 -   PASS: (weight=1.0) DoesNotHandleKZeroCase
 -   PASS: (weight=1.0) AssumesKAlwaysLessThanN
 -   PASS: (weight=1.0) OffByOneErrorInLoop
+        Description: This buggy case ends up running for k+1 intead of k.
 
 ## TestArrayHeapFunctionality
 
