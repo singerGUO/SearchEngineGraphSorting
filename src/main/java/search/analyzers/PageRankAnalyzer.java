@@ -1,10 +1,19 @@
 package search.analyzers;
 
+//import datastructures.concrete.dictionaries.ChainedHashDictionary;
+
+import datastructures.concrete.ChainedHashSet;
+//import datastructures.concrete.KVPair;
+import datastructures.concrete.KVPair;
+import datastructures.concrete.dictionaries.ChainedHashDictionary;
 import datastructures.interfaces.IDictionary;
+import datastructures.interfaces.IList;
 import datastructures.interfaces.ISet;
+//import misc.exceptions.NotYetImplementedException;
 import misc.exceptions.NotYetImplementedException;
 import search.models.Webpage;
 
+//import javax.naming.directory.InitialDirContext;
 import java.net.URI;
 
 /**
@@ -36,10 +45,10 @@ public class PageRankAnalyzer {
         // on this class.
 
         // Step 1: Make a graph representing the 'internet'
-        //IDictionary<URI, ISet<URI>> graph = this.makeGraph(webpages);
+        IDictionary<URI, ISet<URI>> graph = this.makeGraph(webpages);
 
         // Step 2: Use this graph to compute the page rank for each webpage
-        //this.pageRanks = this.makePageRanks(graph, decay, limit, epsilon);
+        this.pageRanks = this.makePageRanks(graph, decay, limit, epsilon);
 
         // Note: we don't store the graph as a field: once we've computed the
         // page ranks, we no longer need it!
@@ -57,7 +66,26 @@ public class PageRankAnalyzer {
      * entirely "self-contained".
      */
     private IDictionary<URI, ISet<URI>> makeGraph(ISet<Webpage> webpages) {
-        throw new NotYetImplementedException();
+        IDictionary<URI, ISet<URI>> graph = new ChainedHashDictionary<>();
+        ISet<URI> allwebpageUri = new ChainedHashSet<>();
+        for (Webpage columnPage : webpages) {
+            allwebpageUri.add(columnPage.getUri());
+        }
+        for (Webpage each : webpages) {
+            IList<URI> links = each.getLinks();
+            ISet<URI> sublist = new ChainedHashSet<>();
+            for (URI uri : links) {
+                if (uri != each.getUri() && allwebpageUri.contains(uri)) {
+                    sublist.add(uri);
+                }
+            }
+            graph.put(each.getUri(), sublist);
+
+        }
+
+        return graph;
+
+
     }
 
     /**
@@ -76,14 +104,34 @@ public class PageRankAnalyzer {
                                                    double decay,
                                                    int limit,
                                                    double epsilon) {
-        // Step 1: The initialize step should go here
+
+
+        // // Step 1: The initialize step should go here
+        double n = 1 / graph.size();
+        double d = 0.85;
+
+
+        IDictionary<URI, Double> old = new ChainedHashDictionary<>();
+        IDictionary<URI, Double> newScore = new ChainedHashDictionary<>();
+        //for getting the name easily we should have a set of the uri
+        ISet<URI> uri = new ChainedHashSet<>();
+        for (KVPair<URI, ISet<URI>> pair : graph) {
+            old.put(pair.getKey(), 0.0);
+            uri.add(pair.getKey());
+        }
+
 
         for (int i = 0; i < limit; i++) {
             // Step 2: The update step should go here
+            for (URI start : uri) {
+                //each iteration put 0.0 in as first pagerank
+                newScore.put(start, 0.0);
+            }
+
 
             // Step 3: the convergence step should go here.
             // Return early if we've converged.
-            
+
             throw new NotYetImplementedException();
         }
         throw new NotYetImplementedException();
@@ -97,6 +145,6 @@ public class PageRankAnalyzer {
      */
     public double computePageRank(URI pageUri) {
         // Implementation note: this method should be very simple: just one line!
-        return 1.0;
+        return pageRanks.get(pageUri);
     }
 }

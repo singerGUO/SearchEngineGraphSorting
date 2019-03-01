@@ -86,6 +86,33 @@ public class TestArrayHeapFunctionality extends BaseTest {
 
     }
 
+    @Test
+    public void testRemoveMin() {
+        IPriorityQueue<Integer> heap = this.makeInstance();
+        int n = 1500;
+
+        for (int i = 0; i <= n; i++) {
+            heap.insert(i);
+            assertEquals(0, heap.peekMin());
+        }
+
+        for (int i = 0; i <= n; i++) {
+            int min = heap.removeMin();
+            assertEquals(i, min);
+        }
+
+        assertEquals(0, heap.size());
+    }
+
+    @Test(timeout = SECOND)
+    public void testrestize() {
+        IPriorityQueue<Integer> heap = this.makeInstance();
+        for (int i = 0; i < 100; i++) {
+            heap.insert(i);
+        }
+        assertEquals(100, heap.size());
+    }
+
     @Test(timeout = SECOND)
     public void testbasicinsertandremoveMin() {
         IPriorityQueue<Integer> heap = this.makeInstance();

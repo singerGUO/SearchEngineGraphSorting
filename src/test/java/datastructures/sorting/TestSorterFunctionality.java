@@ -7,7 +7,9 @@ import misc.Sorter;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.jsoup.helper.Validate.fail;
+import static org.junit.Assert.fail;
+
+
 
 /**
  * See spec for details on what kinds of tests this class should include.
@@ -28,6 +30,7 @@ public class TestSorterFunctionality extends BaseTest {
     }
 
 
+
     @Test(timeout = SECOND)
     public void negativeK() {
         IList<Integer> list = new DoubleLinkedList<>();
@@ -38,6 +41,7 @@ public class TestSorterFunctionality extends BaseTest {
             // Do nothing: this is OK
         }
     }
+
 
     @Test(timeout = SECOND)
     public void largeK() {

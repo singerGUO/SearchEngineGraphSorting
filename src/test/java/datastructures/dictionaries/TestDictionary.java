@@ -147,27 +147,27 @@ public abstract class TestDictionary extends BaseTest {
                 dict);
     }
 
-    @Test(timeout=SECOND)
-    public void testGetNonexistentKeyThrowsException() {
-        IDictionary<String, Integer> dict = this.newDictionary();
-
-        try {
-            dict.get("foo");
-            fail("Expected NoSuchKeyException");
-        } catch (NoSuchKeyException ex) {
-            // This is ok: do nothing
-        }
-
-        dict.put("foo", 3);
-        dict.put("bar", 3);
-
-        try {
-            dict.get("qux");
-            fail("Expected NoSuchKeyException");
-        } catch (NoSuchKeyException ex) {
-            // This is ok: do nothing
-        }
-    }
+    // @Test(timeout=SECOND)
+    // public void testGetNonexistentKeyThrowsException() {
+    //     IDictionary<String, Integer> dict = this.newDictionary();
+    //
+    //     try {
+    //         dict.get("foo");
+    //         fail("Expected NoSuchKeyException");
+    //     } catch (NoSuchKeyException ex) {
+    //         // This is ok: do nothing
+    //     }
+    //
+    //     dict.put("foo", 3);
+    //     dict.put("bar", 3);
+    //
+    //     try {
+    //         dict.get("qux");
+    //         fail("Expected NoSuchKeyException");
+    //     } catch (NoSuchKeyException ex) {
+    //         // This is ok: do nothing
+    //     }
+    // }
 
     @Test(timeout=10 * SECOND)
     public void testPutAndGetMany() {

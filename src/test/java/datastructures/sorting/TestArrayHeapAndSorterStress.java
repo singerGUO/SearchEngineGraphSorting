@@ -10,6 +10,7 @@ import misc.exceptions.EmptyContainerException;
 import org.junit.Test;
 
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -24,13 +25,13 @@ public class TestArrayHeapAndSorterStress extends BaseTest {
     @Test(timeout = 10 * SECOND)
     public void testStressUsage() {
         IList<Integer> list = new DoubleLinkedList<>();
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1000000; i++) {
             list.add(i);
         }
         IList<Integer> top = Sorter.topKSort(5000, list);
         assertEquals(5000, top.size());
         for (int i = 0; i < top.size(); i++) {
-            assertEquals(100000 - 5000 + i, top.get(i));
+            assertEquals(1000000 - 5000 + i, top.get(i));
         }
     }
 
@@ -75,6 +76,43 @@ public class TestArrayHeapAndSorterStress extends BaseTest {
         }
 
     }
+
+
+    @Test(timeout = 10 * SECOND)
+    public void testPlaceholder() {
+        assertTrue(true);
+    }
+
+    @Test(timeout = 10 * SECOND)
+    public void testHeapefficiency() {
+        IPriorityQueue<Integer> heap = this.makeInstance();
+        for (int i = 0; i < 200000; i++) {
+            heap.insert(i);
+        }
+        for (int i = 0; i < 200000; i++) {
+            assertEquals(i, heap.peekMin());
+            assertEquals(i, heap.removeMin());
+        }
+
+    }
+
+    @Test(timeout = 10 * SECOND)
+    public void testSorterEfficiency() {
+
+        IList<Integer> list = new DoubleLinkedList<>();
+
+        for (int i = 0; i < 300000; i++) {
+            list.add(i);
+        }
+
+        IList<Integer> top = Sorter.topKSort(150000, list);
+        assertEquals(150000, top.size());
+        for (int i = 0; i < top.size(); i++) {
+            assertEquals(299999 - i, top.remove());
+        }
+    }
+
+
 
 
 }
