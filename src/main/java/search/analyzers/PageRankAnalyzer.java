@@ -10,7 +10,7 @@ import datastructures.interfaces.IDictionary;
 import datastructures.interfaces.IList;
 import datastructures.interfaces.ISet;
 //import misc.exceptions.NotYetImplementedException;
-import misc.exceptions.NotYetImplementedException;
+//import misc.exceptions.NotYetImplementedException;
 import search.models.Webpage;
 
 //import javax.naming.directory.InitialDirContext;
@@ -107,34 +107,115 @@ public class PageRankAnalyzer {
 
 
         // // Step 1: The initialize step should go here
-        double n = 1 / graph.size();
-        double d = 0.85;
 
+        double d = 0.85;
+        double size = graph.size();
+        double n = 1 / size;
 
         IDictionary<URI, Double> old = new ChainedHashDictionary<>();
         IDictionary<URI, Double> newScore = new ChainedHashDictionary<>();
+        // IDictionary<URI, Double> update = new ChainedHashDictionary<>();
+
         //for getting the name easily we should have a set of the uri
         ISet<URI> uri = new ChainedHashSet<>();
         for (KVPair<URI, ISet<URI>> pair : graph) {
-            old.put(pair.getKey(), 0.0);
+
+            old.put(pair.getKey(), n);
             uri.add(pair.getKey());
         }
 
 
         for (int i = 0; i < limit; i++) {
             // Step 2: The update step should go here
+
             for (URI start : uri) {
                 //each iteration put 0.0 in as first pagerank
                 newScore.put(start, 0.0);
+
+                if (graph.get(start).size() == 0) {
+                    for (KVPair<URI, Double> pair : old) {
+                        double value = pair.getValue();
+                        URI key = pair.getKey();
+                        newScore.put(key, value + (old.get(pair.getKey()) * d) / uri.size() + (1 - d) / size);
+
+                    }
+
+                }
+                for (URI subPair : graph.get(start)) {
+                    int subSize = graph.get(start).size();
+                    newScore.put(subPair, old.get(subPair) + d * old.get(subPair) / subSize + (1 - d) / size);
+                }
+
+
             }
 
-
-            // Step 3: the convergence step should go here.
-            // Return early if we've converged.
-
-            throw new NotYetImplementedException();
+            for (KVPair<URI, ISet<URI>> pair : graph) {
+                if (old.get(pair.getKey()) - newScore.get(pair.getKey()) >= epsilon) {
+                    return old;
+                }
+            }
+            old = newScore;
         }
-        throw new NotYetImplementedException();
+
+
+        return newScore;
+        // double size = graph.size();
+        // double initial = 1/size;
+        // double newSurf = (1-decay)/size;
+        // boolean pass = true;
+        // IDictionary<URI, Double> older = new ChainedHashDictionary<URI, Double>();
+        // ISet<URI> web = new ChainedHashSet<URI>();
+        // IDictionary<URI, Double> result = new ChainedHashDictionary<URI, Double>();
+        // for (KVPair<URI, ISet<URI>> pair: graph) {
+        //     URI uri = pair.getKey();
+        //     older.put(uri, initial);
+        //     web.add(uri);
+        // }
+        // for (int i = 0; i < limit; i++) {
+        //     for (URI first: web) {
+        //         result.put(first, 0.0);
+        //     }
+        //     for (KVPair<URI, ISet<URI>> pair: graph) {
+        //         URI uri = pair.getKey();
+        //         double old = older.get(uri);
+        //         ISet<URI> links = pair.getValue();
+        //         double sizeLocal = links.size();
+        //         if (sizeLocal == 0) {
+        //             for (URI link: web) {
+        //                 double update = result.get(link);
+        //                 update += decay*old/size;
+        //                 result.put(link, update);
+        //             }
+        //
+        //         } else {
+        //             for (URI link: links) {
+        //                 double update = result.get(link);
+        //                 update += decay*old/sizeLocal;
+        //                 result.put(link, update);
+        //             }
+        //         }
+        //         double last = result.get(uri);
+        //         last+=newSurf;
+        //         result.put(uri, last);
+        //     }
+        //
+        //     for (URI uri: web) {
+        //         if (Math.abs(result.get(uri)-older.get(uri)) > epsilon) {
+        //             pass = false;
+        //         }
+        //     }
+        //     if (pass) {
+        //         return result;
+        //     }  else {
+        //         for (KVPair<URI, Double> pair: result) {
+        //             URI uri = pair.getKey();
+        //             double value = pair.getValue();
+        //             older.put(uri, value);
+        //         }
+        //     }
+        //
+        // }
+        // return result;
     }
 
     /**
