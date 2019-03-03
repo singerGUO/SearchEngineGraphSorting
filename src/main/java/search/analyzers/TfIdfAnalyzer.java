@@ -44,10 +44,9 @@ public class TfIdfAnalyzer {
         this.idfScores = this.computeIdfScores(webpages);
         this.documentTfIdfVectors = this.computeAllDocumentTfIdfVectors(webpages);
         normVector = new ChainedHashDictionary<>();
+        this.precomputing();
 
-        for (KVPair<URI, IDictionary<String, Double>> page : documentTfIdfVectors) {
-            normVector.put(page.getKey(), norm(page.getValue()));
-        }
+
     }
 
     // Note: this method, strictly speaking, doesn't need to exist. However,
@@ -184,10 +183,18 @@ public class TfIdfAnalyzer {
 
         }
         denominator = normVector.get(pageUri) * norm(queryVector);
-        if (denominator != 0) {
-            return numerator / denominator;
+
+        return (denominator != 0) ? numerator / denominator : 0.0;
+        // if (denominator != 0) {
+        //     return numerator / denominator;
+        // }
+        // return 0.0;
+    }
+
+    public void precomputing() {
+        for (KVPair<URI, IDictionary<String, Double>> page : documentTfIdfVectors) {
+            normVector.put(page.getKey(), norm(page.getValue()));
         }
-        return 0.0;
     }
 
     private double norm(IDictionary<String, Double> vector) {

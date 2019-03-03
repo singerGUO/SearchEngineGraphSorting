@@ -37,10 +37,10 @@ public class TestPageRankAnalyzer extends BaseTest {
         URI pageDUri = URI.create("http://example.com/page-d.html");
 
         ISet<Webpage> pages = new ChainedHashSet<>();
-        pages.add(this.buildPage(pageAUri, new URI[] {pageBUri, pageCUri, pageDUri}));
-        pages.add(this.buildPage(pageBUri, new URI[] {pageAUri}));
-        pages.add(this.buildPage(pageCUri, new URI[] {pageAUri}));
-        pages.add(this.buildPage(pageDUri, new URI[] {pageAUri}));
+        pages.add(this.buildPage(pageAUri, new URI[]{pageBUri, pageCUri, pageDUri}));
+        pages.add(this.buildPage(pageBUri, new URI[]{pageAUri}));
+        pages.add(this.buildPage(pageCUri, new URI[]{pageAUri}));
+        pages.add(this.buildPage(pageDUri, new URI[]{pageAUri}));
 
         PageRankAnalyzer analyzer = new PageRankAnalyzer(pages, 0.85, 0.00001, 100);
 
@@ -50,16 +50,16 @@ public class TestPageRankAnalyzer extends BaseTest {
         assertEquals(0.17342, analyzer.computePageRank(pageDUri), DELTA);
     }
 
-    @Test(timeout=SECOND)
+    @Test(timeout = SECOND)
     public void testSpecExample2() {
         URI pageAUri = URI.create("http://example.com/page-a.html");
         URI pageBUri = URI.create("http://example.com/page-b.html");
         URI pageCUri = URI.create("http://example.com/page-c.html");
 
         ISet<Webpage> pages = new ChainedHashSet<>();
-        pages.add(this.buildPage(pageAUri, new URI[] {pageBUri}));
-        pages.add(this.buildPage(pageBUri, new URI[] {pageCUri}));
-        pages.add(this.buildPage(pageCUri, new URI[] {pageAUri}));
+        pages.add(this.buildPage(pageAUri, new URI[]{pageBUri}));
+        pages.add(this.buildPage(pageBUri, new URI[]{pageCUri}));
+        pages.add(this.buildPage(pageCUri, new URI[]{pageAUri}));
 
         PageRankAnalyzer analyzer = new PageRankAnalyzer(pages, 0.85, 0.00001, 100);
 
@@ -68,7 +68,7 @@ public class TestPageRankAnalyzer extends BaseTest {
         assertEquals(0.33333, analyzer.computePageRank(pageCUri), DELTA);
     }
 
-    @Test(timeout=SECOND)
+    @Test//(timeout = SECOND)
     public void testSpecExample3() {
         URI pageAUri = URI.create("http://example.com/page-a.html");
         URI pageBUri = URI.create("http://example.com/page-b.html");
@@ -77,11 +77,11 @@ public class TestPageRankAnalyzer extends BaseTest {
         URI pageEUri = URI.create("http://example.com/page-e.html");
 
         ISet<Webpage> pages = new ChainedHashSet<>();
-        pages.add(this.buildPage(pageAUri, new URI[] {pageBUri, pageDUri}));
-        pages.add(this.buildPage(pageBUri, new URI[] {pageCUri, pageDUri}));
-        pages.add(this.buildPage(pageCUri, new URI[] {}));
-        pages.add(this.buildPage(pageDUri, new URI[] {pageAUri}));
-        pages.add(this.buildPage(pageEUri, new URI[] {pageDUri}));
+        pages.add(this.buildPage(pageAUri, new URI[]{pageBUri, pageDUri}));
+        pages.add(this.buildPage(pageBUri, new URI[]{pageCUri, pageDUri}));
+        pages.add(this.buildPage(pageCUri, new URI[]{}));
+        pages.add(this.buildPage(pageDUri, new URI[]{pageAUri}));
+        pages.add(this.buildPage(pageEUri, new URI[]{pageDUri}));
 
         PageRankAnalyzer analyzer = new PageRankAnalyzer(pages, 0.85, 0.00001, 100);
 
@@ -91,5 +91,6 @@ public class TestPageRankAnalyzer extends BaseTest {
         assertEquals(0.31132, analyzer.computePageRank(pageDUri), DELTA);
         assertEquals(0.05244, analyzer.computePageRank(pageEUri), DELTA);
     }
+
 
 }

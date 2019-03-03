@@ -111,6 +111,7 @@ public class PageRankAnalyzer {
         double d = 0.85;
         double size = graph.size();
         double n = 1 / size;
+        boolean pass = true;
 
         IDictionary<URI, Double> old = new ChainedHashDictionary<>();
         IDictionary<URI, Double> newScore = new ChainedHashDictionary<>();
@@ -119,7 +120,6 @@ public class PageRankAnalyzer {
         //for getting the name easily we should have a set of the uri
         ISet<URI> uri = new ChainedHashSet<>();
         for (KVPair<URI, ISet<URI>> pair : graph) {
-
             old.put(pair.getKey(), n);
             uri.add(pair.getKey());
         }
@@ -127,96 +127,58 @@ public class PageRankAnalyzer {
 
         for (int i = 0; i < limit; i++) {
             // Step 2: The update step should go here
-
+            for (URI link : uri) {
+                newScore.put(link, 0.0);
+            }
             for (URI start : uri) {
                 //each iteration put 0.0 in as first pagerank
-                newScore.put(start, 0.0);
-
                 if (graph.get(start).size() == 0) {
-                    for (KVPair<URI, Double> pair : old) {
-                        double value = pair.getValue();
-                        URI key = pair.getKey();
-                        newScore.put(key, value + (old.get(pair.getKey()) * d) / uri.size() + (1 - d) / size);
 
+                    for (URI link : uri) {
+                        double update = newScore.get(link);
+                        update += d * old.get(start) / size;
+                        newScore.put(link, update);
                     }
+                } else {
 
+                    for (URI subPair : graph.get(start)) {
+                        double oldVal = newScore.get(subPair);
+                        int subSize = graph.get(start).size();
+                        double res = d * old.get(start) / subSize;
+                        res += oldVal;
+                        newScore.put(subPair, res);
+                    }
                 }
-                for (URI subPair : graph.get(start)) {
-                    int subSize = graph.get(start).size();
-                    newScore.put(subPair, old.get(subPair) + d * old.get(subPair) / subSize + (1 - d) / size);
-                }
-
-
+                //surfer should be added after the iteration
+                double oldVal = newScore.get(start);
+                oldVal += (1 - d) / size;
+                newScore.put(start, oldVal);
             }
 
             for (KVPair<URI, ISet<URI>> pair : graph) {
-                if (old.get(pair.getKey()) - newScore.get(pair.getKey()) >= epsilon) {
-                    return old;
+                if (Math.abs(old.get(pair.getKey()) - newScore.get(pair.getKey())) > epsilon) {
+                    pass = false;
                 }
             }
-            old = newScore;
+            if (pass) {
+                return old;
+            } else {
+                //deep copy
+                doDeepCopy(newScore, old);
+            }
         }
-
-
         return newScore;
-        // double size = graph.size();
-        // double initial = 1/size;
-        // double newSurf = (1-decay)/size;
-        // boolean pass = true;
-        // IDictionary<URI, Double> older = new ChainedHashDictionary<URI, Double>();
-        // ISet<URI> web = new ChainedHashSet<URI>();
-        // IDictionary<URI, Double> result = new ChainedHashDictionary<URI, Double>();
-        // for (KVPair<URI, ISet<URI>> pair: graph) {
-        //     URI uri = pair.getKey();
-        //     older.put(uri, initial);
-        //     web.add(uri);
-        // }
-        // for (int i = 0; i < limit; i++) {
-        //     for (URI first: web) {
-        //         result.put(first, 0.0);
-        //     }
-        //     for (KVPair<URI, ISet<URI>> pair: graph) {
-        //         URI uri = pair.getKey();
-        //         double old = older.get(uri);
-        //         ISet<URI> links = pair.getValue();
-        //         double sizeLocal = links.size();
-        //         if (sizeLocal == 0) {
-        //             for (URI link: web) {
-        //                 double update = result.get(link);
-        //                 update += decay*old/size;
-        //                 result.put(link, update);
-        //             }
-        //
-        //         } else {
-        //             for (URI link: links) {
-        //                 double update = result.get(link);
-        //                 update += decay*old/sizeLocal;
-        //                 result.put(link, update);
-        //             }
-        //         }
-        //         double last = result.get(uri);
-        //         last+=newSurf;
-        //         result.put(uri, last);
-        //     }
-        //
-        //     for (URI uri: web) {
-        //         if (Math.abs(result.get(uri)-older.get(uri)) > epsilon) {
-        //             pass = false;
-        //         }
-        //     }
-        //     if (pass) {
-        //         return result;
-        //     }  else {
-        //         for (KVPair<URI, Double> pair: result) {
-        //             URI uri = pair.getKey();
-        //             double value = pair.getValue();
-        //             older.put(uri, value);
-        //         }
-        //     }
-        //
-        // }
-        // return result;
+
     }
+
+    public void doDeepCopy(IDictionary<URI, Double> newScore, IDictionary<URI, Double> old) {
+        for (KVPair<URI, Double> pair : newScore) {
+            URI link = pair.getKey();
+            double value = pair.getValue();
+            old.put(link, value);
+        }
+    }
+
 
     /**
      * Returns the page rank of the given URI.
