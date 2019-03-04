@@ -6,7 +6,7 @@ public class Main {
     public static final String DATA_FOLDER_NAME = "wikipedia-with-spam";
 
     // The name of your search engine (feel free to change this).
-    public static final String SITE_TITLE = "this project Sucks";
+    public static final String SITE_TITLE = "search engine";
 
     // The port to serve your web server on.
     // You can ignore this constant. If you're familiar with web development
